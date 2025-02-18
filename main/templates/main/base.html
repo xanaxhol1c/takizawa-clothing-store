@@ -6,12 +6,31 @@
         <title>{% block title %}Main Index{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href={% static 'bootstrap\css\bootstrap.min.css'%}>
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
     </head>
     <body>
-        <div class = "container">
-            {% block content %} {%endblock%} 
-        </div>
+        <header class="header sticky-top"> 
+            <div class="header-container">         
+                <div class="header-nav">
+                    <ul class="header-list">
+                        <li><a href='/' class="nav-a m-3">Home</a></li>
+                        <li><a href='#' class="nav-a m-3">Shop</a></li>
+                    </ul>               
+                </div>  
+
+                <div class="header-logo">
+                    <a href='/'><img src="{% static 'img/takizawa logo.png' %}" class="takizawa-logo" alt="Logo"></a>
+                </div>
+
+                <div class="header-empty">
+                    <!-- Тут можна додати кнопку Login у майбутньому -->
+                </div>
+            </div>
+        </header> 
         
+        <div class="container">
+            {% block content %} {% endblock %} 
+        </div>
     </body>
 </html>
