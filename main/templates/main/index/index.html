@@ -9,13 +9,13 @@
         <div class="home-cards d-flex">
         {% for category, products in products_by_categories.items%}
             {% for product in products%}
-                <a href="/" class="home-card">
+                <a href="{{ product.get_absolute_url }}" class="home-card">
                     <img src="{{product.image.url}}" class="img-card">
-                    <h5 class="title-card">{{product.name}}</h5>
+                    <h5 class="title-card m-1">{{product.name}}</h5>
                     {% if product.discount %}
-                        <p>{{product.sell_price}}</p>
+                        <p class="m-1">{{product.sell_price}}</p>
                     {% else %}
-                        <p>{{product.price}}</p>
+                        <p class="m-1">{{product.price}}</p>
                     {% endif %}
 
                 </a>

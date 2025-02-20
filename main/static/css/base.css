@@ -58,6 +58,8 @@ h1 {
 .header-empty {
     width: 33%;
     display: flex;
+    flex-wrap: wrap; 
+    display: flex;
     align-items: center;
 }
 
