@@ -1,9 +1,28 @@
 {% extends 'main/base.html' %}
-
 {% block title%}Takizawa{% endblock %}
 
 {%block content %} 
-    <p>Магазин тест</p> 
+    <section class="home d-flex flex-column">
+        <div class="home-title">
+            <h1>Takizawa store</h1>
+        </div>
+        <div class="home-cards d-flex">
+        {% for category, products in products_by_categories.items%}
+            {% for product in products%}
+                <a href="/" class="home-card">
+                    <img src="{{product.image.url}}" class="img-card">
+                    <h5 class="title-card">{{product.name}}</h5>
+                    {% if product.discount %}
+                        <p>{{product.sell_price}}</p>
+                    {% else %}
+                        <p>{{product.price}}</p>
+                    {% endif %}
+
+                </a>
+            {% endfor %}
+        {% endfor %}
+        </div>
+    </section>
 
     
 {% endblock %}

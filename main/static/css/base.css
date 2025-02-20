@@ -34,6 +34,10 @@ p {
     font-size: 1em;
 }
 
+h1 {
+    color: #000000;
+    font-size: 3em;
+}
 .header {
     background-color: #141414;
     padding: 1px 0;
@@ -75,7 +79,40 @@ p {
 }
 .container{
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
 }
+
+.home-cards{
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+    justify-content: center;
+    align-items: center;
+
+}
+
+.home-card{
+    margin-top: 0;
+    box-sizing: border-box;
+    max-width: 300px;
+    height: 450px;
+    margin-bottom: 10px;
+}
+
+.img-card{
+    max-height: 450px;
+    max-width: 100%;
+}
+
+.title-card {
+    color: #000000;
+    font-size: 40px;
+}
+
+
+
 .footer{
     bottom: 0;
     width: 100%;
