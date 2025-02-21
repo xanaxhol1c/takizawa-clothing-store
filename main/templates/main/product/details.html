@@ -1,2 +1,22 @@
 {% extends 'main/base.html' %}
+{% load static %}
 {% block title%}Takizawa{% endblock %}
+
+{% block content %}
+    <div class="detail-product d-flex flex-row">
+        <div class="product-pic-container">
+            <img src="{% if product.image %} {{product.image.url}} {% else %} {% static "img/noimage.png" %} {% endif %}" class="product-img">    
+        </div>
+        <div class="product-description">
+            <h1>{{product.name}}</h1>
+            <h2 class="pt-3">Desription:</h2>
+            <p class="description-text">{{product.desription}}<p>
+            {% if product.discount %}
+                <h2 class="pt-3">{{product.sell_price}}₴</h2>
+            {% else %}
+                <h2 class="pt-3">{{product.price}}₴</h2>
+            {% endif %}
+            <a href = "#" class="cart-btn btn">Add to cart</a>
+        </div>
+    </div>
+{% endblock%}

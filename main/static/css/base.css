@@ -1,3 +1,4 @@
+/* Old Gothic font from static/fonts */
 @font-face {
     font-family: "Old London";
     src: url("../fonts/OldLondon.ttf") format("truetype");
@@ -5,6 +6,7 @@
     font-style: normal;
 }
 
+/* body of all pages */
 body {
     font-size: 18px;
     padding: 0;
@@ -16,6 +18,7 @@ body {
     min-height: 100vh;
 }
 
+/*list for navbar on header*/
 ul {
     list-style: none;
     padding: 0;
@@ -23,6 +26,7 @@ ul {
     display: flex;
 }
 
+/* all possible text tags */
 a {
     text-decoration: none;
     color: #ffffff;
@@ -38,6 +42,13 @@ h1 {
     color: #000000;
     font-size: 3em;
 }
+
+h2 {
+    color: #000000;
+    font-size: 2em;
+}
+
+/* all classes for header in css */
 .header {
     background-color: #141414;
     padding: 1px 0;
@@ -76,10 +87,14 @@ h1 {
     justify-content: flex-end; 
 }
 
+/* header takizawa logo*/
 .takizawa-logo {
     max-height: 75px;
     max-width: 100%;
 }
+
+
+/* main container of all content*/
 .container{
     position: relative;
     flex: 1;
@@ -88,6 +103,7 @@ h1 {
     justify-content: space-between; 
 }
 
+/* classes for shop list display. for now - list.html */
 .home-cards{
     display: flex;
     flex-wrap: wrap; 
@@ -115,6 +131,8 @@ h1 {
     font-size: 40px;
 }
 
+
+/* all classes for home page */
 .home-text-container{
     position: relative;
     top: 0;
@@ -145,6 +163,62 @@ h1 {
 
 }
 
+/* all classes for item description page. used in details.html*/
+
+.detail-product{
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.product-pic-container{
+    max-width: 60%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+
+.product-img{
+    max-height: 550px;
+    min-height: 200px;
+    width: 100%; 
+    height: fit-content; 
+    object-fit: cover; 
+}
+
+.product-description{
+    max-width: 40%;
+    margin-top: 25px;
+    position: relative;
+    justify-content: flex-start;
+    font-size: 1.25em;
+}
+
+.description-text{
+    font-size: 1.25em;
+    padding-top: 10px;
+    white-space: pre;
+}
+
+.cart-btn{
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-size: 1.1em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 180px;
+    height: 50px;
+    color: black;
+}
+
+.cart-btn:hover{
+    background-color: #141414;
+    color: white;
+}
+
+
+/* footer */
 .footer{
     bottom: 0;
     width: 100%;
