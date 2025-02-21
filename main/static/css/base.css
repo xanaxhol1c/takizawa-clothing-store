@@ -49,17 +49,18 @@ h1 {
     width: 100%;
     max-width: 1400px;
     display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
     align-items: center;
-    justify-content: space-between; 
 }
 
 .header-nav,
 .header-logo,
 .header-empty {
+    box-sizing: border-box;
     width: 33%;
     display: flex;
-    flex-wrap: wrap; 
-    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
@@ -80,9 +81,10 @@ h1 {
     max-width: 100%;
 }
 .container{
+    position: relative;
     flex: 1;
     display: flex;
-    align-items: center;
+    align-items: space-between;
     justify-content: space-between; 
 }
 
@@ -113,7 +115,35 @@ h1 {
     font-size: 40px;
 }
 
+.home-text-container{
+    position: relative;
+    top: 0;
+    left: 0;
+    max-width: 35%;
+    display: flex;
+    align-items: flex-start;
+}
 
+.home-pic-container{
+    position: relative;
+    max-width: 65%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: top; 
+
+}
+
+.home-text{
+    font-size: 1.5em;
+}
+
+.home-model-pic{
+    position: relative;
+    top: 0;
+    left: 0;
+    max-height: 650px;
+
+}
 
 .footer{
     bottom: 0;

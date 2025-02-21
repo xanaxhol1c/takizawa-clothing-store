@@ -20,7 +20,8 @@ from . import views
 app_name = 'main'
 
 urlpatterns = [
-    path('', views.get_all_list, name='get_all_list'),
-    path('<slug:slug>/', views.product_detail,  name='product_detail'),
+    path('', views.index, name='index'),
+    path('shop/', views.get_all_list, name='shop'),
+    path('shop/<slug:slug>/', views.product_detail,  name='product_detail'),
 
 ]

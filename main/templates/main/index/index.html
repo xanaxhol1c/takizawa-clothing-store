@@ -1,28 +1,26 @@
 {% extends 'main/base.html' %}
+{% load static %}
 {% block title%}Takizawa{% endblock %}
 
 {%block content %} 
-    <section class="home d-flex flex-column">
-        <div class="home-title">
+    <section class="home-text-container d-flex flex-column">
+        <div class="home-header mt-2 d-flex">
             <h1>Takizawa store</h1>
         </div>
-        <div class="home-cards d-flex">
-        {% for category, products in products_by_categories.items%}
-            {% for product in products%}
-                <a href="{{ product.get_absolute_url }}" class="home-card">
-                    <img src="{{product.image.url}}" class="img-card">
-                    <h5 class="title-card m-1">{{product.name}}</h5>
-                    {% if product.discount %}
-                        <p class="m-1">{{product.sell_price}}</p>
-                    {% else %}
-                        <p class="m-1">{{product.price}}</p>
-                    {% endif %}
-
-                </a>
-            {% endfor %}
-        {% endfor %}
+        <div class="d-flex">
+            <p class="home-text">
+                Takizawa Clothing is a rebellion stitched in fabric—a statement of defiance, 
+                crafted for those who walk the line between chaos and control. 
+                Inspired by the raw energy of punk, the precision of high fashion, and the anonymity of the underground, 
+                we create garments that transcend trends. Each piece is a testament to individuality, 
+                a symbol of those who embrace darkness yet move with purpose. We are not just a brand. 
+                We are a movement. Wear the future. Own your silhouette. Defy the ordinary
+            </p>
         </div>
     </section>
+    <div class="home-pic-container d-flex flex-column mt-2">
+        <img src = "{% static 'img/home model pic1.png' %}" class="home-model-pic">
+    </div>
 
-    
+
 {% endblock %}
