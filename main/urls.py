@@ -21,7 +21,8 @@ app_name = 'main'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('shop/', views.get_all_list, name='shop'),
+    path('shop/', views.get_products_list, name='shop'),
+    path('shop/category/<slug:category_slug>', views.get_products_list, name='get_products_list'),
     path('shop/<slug:slug>/', views.product_detail,  name='product_detail'),
 
 ]

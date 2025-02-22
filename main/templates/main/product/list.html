@@ -2,20 +2,35 @@
 {% block title%}Takizawa{% endblock %}
 
 {%block content %} 
-    <section class="home d-flex flex-column">
+    <div class="category-sidebar d-flex flex-column">
         <div class="home-title">
-            <h1>Shop</h1>
+            <h1>Categories</h1>
+        </div>
+        <ul class="d-flex flex-column mt-2">
+                <li>
+                    <a href="/shop/" class="sidebar-category-name">All categories</a>
+                </li>
+            {%for c in categories %}
+                <li {% if category.slug == c.slug %} class="selected" {% endif %}> 
+                    <a href="{{c.get_absolute_url}}" class="sidebar-category-name">{{c.name}}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <section class="home-section d-flex flex-column">
+        <div class="home-title">
+            <h1>{% if category %}{{category.name}}{%else%}Shop{%endif%}</h1>
         </div>
         <div class="home-cards d-flex">
         {% for category, products in products_by_categories.items%}
             {% for product in products%}
-                <a href="{{ product.get_absolute_url }}" class="home-card">
+                <a href="{{ product.get_absolute_url }}" class="home-card d-flex flex-column">
                     <img src="{{product.image.url}}" class="img-card">
                     <h5 class="title-card m-1">{{product.name}}</h5>
                     {% if product.discount %}
-                        <p class="m-1">{{product.sell_price}}₴</p>
+                        <p class="home-card-price m-1">{{product.sell_price}}₴</p>
                     {% else %}
-                        <p class="m-1">{{product.price}}₴</p>
+                        <p class="home-card-price m-1">{{product.price}}₴</p>
                     {% endif %}
 
                 </a>
