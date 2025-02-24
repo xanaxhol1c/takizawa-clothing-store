@@ -2,42 +2,58 @@
 {% block title%}Takizawa{% endblock %}
 
 {%block content %} 
-    <div class="category-sidebar d-flex flex-column">
-        <div class="home-title">
-            <h1>Categories</h1>
+    <div class="list-container">
+        <div class="category-sidebar d-flex flex-column">
+            <div class="home-title">
+                <h1>Categories</h1>
+            </div>
+            <ul class="d-flex flex-column mt-2">
+                    <li>
+                        <a href="/shop/" class="sidebar-category-name">All categories</a>
+                    </li>
+                {%for c in categories %}
+                    <li {% if category.slug == c.slug %} class="selected" {% endif %}> 
+                        <a href="{{c.get_absolute_url}}" class="sidebar-category-name">{{c.name}}</a>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
-        <ul class="d-flex flex-column mt-2">
-                <li>
-                    <a href="/shop/" class="sidebar-category-name">All categories</a>
-                </li>
-            {%for c in categories %}
-                <li {% if category.slug == c.slug %} class="selected" {% endif %}> 
-                    <a href="{{c.get_absolute_url}}" class="sidebar-category-name">{{c.name}}</a>
-                </li>
-            {% endfor %}
+        <section class="home-section d-flex flex-column">
+            <div class="home-title">
+                <h1>{% if category %}{{category.name}}{%else%}Shop{%endif%}</h1>
+            </div>
+            <div class="home-cards d-flex">
+                {% for product in current_page%}
+                    <a href="{{ product.get_absolute_url }}" class="home-card d-flex flex-column">
+                        <img src="{{product.image.url}}" class="img-card">
+                        <h5 class="title-card m-1">{{product.name}}</h5>
+                        {% if product.discount %}
+                            <p class="home-card-price m-1">{{product.sell_price}}₴</p>
+                        {% else %}
+                            <p class="home-card-price m-1">{{product.price}}₴</p>
+                        {% endif %}
+                    </a>
+                {% endfor %}
+            </div>      
+        </section>
+    </div>
+    <div class="paginator-container">
+        <ul class="paginator">
+            <li class="{%if not current_page.has_previous %}disabled{% else %} paginator-btn {% endif %}">
+                <a href="{%if current_page.has_previous %}?page={{current_page.previous_page_number}} {% endif %}" class="paginator-btn">Previous</a>
+            </li>
+            {% for page in current_page.paginator.page_range %}
+                {% if page >= current_page.number|add:-2 and page <= current_page.number|add:2 %}
+                    <li>
+                        <a href="?page={{page}}" class="{% if current_page.number == page %} disabled {% else %} paginator-btn {% endif %} ">{{page}}</a>
+                    </li>
+                {%endif%}
+            {% endfor%}
+            <li class="{%if not current_page.has_next %}disabled{% else %}paginator-btn{% endif %}">
+                <a href="{%if current_page.has_next %}?page={{current_page.next_page_number}} {% endif %}" class="paginator-btn"> Next</a>
+            </li>
         </ul>
     </div>
-    <section class="home-section d-flex flex-column">
-        <div class="home-title">
-            <h1>{% if category %}{{category.name}}{%else%}Shop{%endif%}</h1>
-        </div>
-        <div class="home-cards d-flex">
-        {% for category, products in products_by_categories.items%}
-            {% for product in products%}
-                <a href="{{ product.get_absolute_url }}" class="home-card d-flex flex-column">
-                    <img src="{{product.image.url}}" class="img-card">
-                    <h5 class="title-card m-1">{{product.name}}</h5>
-                    {% if product.discount %}
-                        <p class="home-card-price m-1">{{product.sell_price}}₴</p>
-                    {% else %}
-                        <p class="home-card-price m-1">{{product.price}}₴</p>
-                    {% endif %}
-
-                </a>
-            {% endfor %}
-        {% endfor %}
-        </div>
-    </section>
 
     
 {% endblock %}

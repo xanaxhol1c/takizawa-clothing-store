@@ -3,23 +3,25 @@
 {% block title%}Takizawa{% endblock %}
 
 {%block content %} 
-    <section class="home-text-container d-flex flex-column">
-        <div class="home-header mt-2 d-flex">
-            <h1>Takizawa store</h1>
+    <div class="home-container">
+        <section class="home-text-container d-flex flex-column">
+            <div class="home-header mt-2 d-flex">
+                <h1>Takizawa store</h1>
+            </div>
+            <div class="d-flex">
+                <p class="home-text">
+                    Takizawa Clothing is a rebellion stitched in fabric—a statement of defiance, 
+                    crafted for those who walk the line between chaos and control. 
+                    Inspired by the raw energy of punk, the precision of high fashion, and the anonymity of the underground, 
+                    we create garments that transcend trends. Each piece is a testament to individuality, 
+                    a symbol of those who embrace darkness yet move with purpose. We are not just a brand. 
+                    We are a movement. Wear the future. Own your silhouette. Defy the ordinary
+                </p>
+            </div>
+        </section>
+        <div class="home-pic-container d-flex flex-column mt-2">
+            <img src = "{% static 'img/home model pic1.png' %}" class="home-model-pic">
         </div>
-        <div class="d-flex">
-            <p class="home-text">
-                Takizawa Clothing is a rebellion stitched in fabric—a statement of defiance, 
-                crafted for those who walk the line between chaos and control. 
-                Inspired by the raw energy of punk, the precision of high fashion, and the anonymity of the underground, 
-                we create garments that transcend trends. Each piece is a testament to individuality, 
-                a symbol of those who embrace darkness yet move with purpose. We are not just a brand. 
-                We are a movement. Wear the future. Own your silhouette. Defy the ordinary
-            </p>
-        </div>
-    </section>
-    <div class="home-pic-container d-flex flex-column mt-2">
-        <img src = "{% static 'img/home model pic1.png' %}" class="home-model-pic">
     </div>
 
 
