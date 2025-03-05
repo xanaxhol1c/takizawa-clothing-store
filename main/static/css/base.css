@@ -167,13 +167,13 @@ h2 {
 }
 
 .title-card {
-    flex: 0 0 35%;
+    flex: 0 0 30%;
     color: #000000;
-    font-size: 40px;
+    font-size: 32px;
 }
 
 .home-card-price {
-    flex: 0 0 15%;
+    flex: 0 0 20%;
 }
 
 
