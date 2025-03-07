@@ -25,7 +25,15 @@
                 </div>
 
                 <div class="header-empty">
-                    <a href='/cart/' class="nav-a m-3">Cart</a>
+                    <a href='/cart/' class="nav-a m-3">Cart  
+                    {% with cart_quantity=cart|length %}
+                        {% if cart_quantity > 0 %}
+                            <span class='bg-dot'>          
+                                {{cart_quantity}} 
+                            </span>    
+                        {% endif %}
+                    {% endwith %}
+                    </a>
                 </div>
             </div>
         </header> 

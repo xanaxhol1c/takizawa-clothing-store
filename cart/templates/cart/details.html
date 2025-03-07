@@ -35,6 +35,10 @@
         </section>
     </div>
     <div class="cart-total">
-        <h1>Total price: {{ cart.total_price }}</h1>
+        {% with cart_quantity=cart|length %}
+            {% if cart_quantity > 0 %}
+                <h1>Total price: {{ cart.total_price }}</h1>
+            {% endif %}
+        {% endwith %}
     </div>  
 {% endblock %}

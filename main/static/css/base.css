@@ -68,11 +68,34 @@ h2 {
 .header-nav,
 .header-logo,
 .header-empty {
+    position: relative;
     box-sizing: border-box;
     width: 33%;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.nav-a{
+    z-index: 2;
+}
+
+.bg-dot {
+    position: absolute;
+    top: 16px;  /* Вирівнюємо по верхньому краю */
+    right: 3px; /* Зміщуємо вправо */
+    background-color: red;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    z-index: -1;
+
+    width: 18px;  /* Діаметр кола */
+    height: 18px; 
+    line-height: 18px; /* Вирівнювання тексту в середині кола */
+    
+    border-radius: 50%; /* Робимо його круглим */
 }
 
 .header-nav {
