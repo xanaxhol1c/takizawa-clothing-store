@@ -283,7 +283,95 @@ h2 {
     color: white;
 }
 
+/* classes for cart page - details.html*/
 
+.cart-container{
+    display: flex;
+    flex-wrap: 1;
+}
+
+.cart-section{
+    display: flex;
+    width: 100%
+}
+
+.cart-cards{
+    padding-top: 10px;
+}
+
+.cart-card{
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.cart-card-pic-container{
+    display: flex;
+    width: 20%;
+}
+.cart-product-img{
+    flex: 0 0 50%;
+    max-height: 200px;
+    width: 100%;
+    height: auto;
+
+}
+
+.cart-card-info{
+    display: flex;
+    width: 25%;
+    justify-content: flex-start;
+    flex-direction: start;
+    gap: 5px;
+}
+
+.cart-card-price{
+    display: flex;
+    width: 20%;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-card-btns{
+    display: flex;
+    width: 20%;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-card-name{
+    font-size: 2em;
+}
+
+.cart-card-q{
+    font-size: 1.5em;
+}
+
+.cart-card-price-text{
+    font-size: 2em;
+}
+
+.cart-total{
+    margin-bottom: 15px;
+}
+
+.remove-btn{
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-size: 1.1em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100px;
+    height: 50px;
+    color: black;
+}
+
+.remove-btn:hover{
+    background-color: #141414;
+    color: white;
+}
 /* footer */
 .footer{
     bottom: 0;

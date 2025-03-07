@@ -16,7 +16,14 @@
             {% else %}
                 <h2 class="pt-3">{{product.price}}₴</h2>
             {% endif %}
-            <a href = "#" class="cart-btn btn">Add to cart</a>
+
+            <form action="{% url "cart:cart_add" product.id %}" class="qform" method="post">
+                <div class="cart-form">
+                    {{cart_product_form}}
+                    {% csrf_token %}
+                </div>
+                <input type="submit" value="Add to cart" class="cart-btn btn">
+            </form>
         </div>
     </div>
 {% endblock%}
