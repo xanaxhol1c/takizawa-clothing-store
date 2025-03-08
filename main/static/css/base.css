@@ -82,8 +82,8 @@ h2 {
 
 .bg-dot {
     position: absolute;
-    top: 16px;  /* Вирівнюємо по верхньому краю */
-    right: 3px; /* Зміщуємо вправо */
+    top: 17px;  
+    right: 3px; 
     background-color: red;
     color: white;
     font-size: 15px;
@@ -96,6 +96,17 @@ h2 {
     line-height: 18px; /* Вирівнювання тексту в середині кола */
     
     border-radius: 50%; /* Робимо його круглим */
+}
+
+.plus-symbol {
+    position: absolute;
+    top: 17px;  
+    right: -12px; 
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    width: 18px;  /* Діаметр кола */
+    height: 18px; 
+    line-height: 18px; /* Вирівнювання тексту в середині кола */
 }
 
 .header-nav {
@@ -317,6 +328,15 @@ h2 {
     display: flex;
     width: 100%
 }
+
+.cart-empty{
+    display: flex;
+    width: 100%;
+    margin-top: 19%;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .cart-cards{
     padding-top: 10px;

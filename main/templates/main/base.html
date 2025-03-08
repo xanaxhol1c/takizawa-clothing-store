@@ -28,9 +28,19 @@
                     <a href='/cart/' class="nav-a m-3">Cart  
                     {% with cart_quantity=cart|length %}
                         {% if cart_quantity > 0 %}
-                            <span class='bg-dot'>          
-                                {{cart_quantity}} 
-                            </span>    
+                            {% if cart_quantity < 100 %}   
+                                <span class='bg-dot'>   
+                                    {{cart_quantity}} 
+                                </span>
+                            {% else %}
+                                <span class='bg-dot'>   
+                                    99
+                                </span>
+                                <span class='plus-symbol'>
+                                    +
+                                </span>
+                            {% endif %}  
+                            </span>   
                         {% endif %}
                     {% endwith %}
                     </a>
