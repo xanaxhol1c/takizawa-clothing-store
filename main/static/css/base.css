@@ -322,11 +322,12 @@ h2 {
 .cart-container{
     display: flex;
     flex-wrap: 1;
+    margin-top: 10px;
+    justify-content: space-between;
 }
 
 .cart-section{
     display: flex;
-    width: 100%
 }
 
 .cart-empty{
@@ -339,6 +340,8 @@ h2 {
 
 
 .cart-cards{
+    display: flex;
+    justify-content: space-between;
     padding-top: 10px;
 }
 
@@ -364,7 +367,7 @@ h2 {
 
 .cart-card-info{
     display: flex;
-    width: 25%;
+    width: 35%;
     justify-content: flex-start;
     flex-direction: start;
     gap: 5px;
@@ -372,7 +375,7 @@ h2 {
 
 .cart-card-price{
     display: flex;
-    width: 20%;
+    width: 25%;
     align-items: center;
     justify-content: center;
 }
@@ -396,8 +399,27 @@ h2 {
     font-size: 2em;
 }
 
-.cart-total{
-    margin-bottom: 15px;
+.cart-total {
+    display: flex;
+    position: sticky;
+    top: 87.5px;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    margin-left: 20px;
+    /* border: 3px solid black; */
+    border-radius: 5px;
+}
+
+.cart-total-text{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.cart-checkout-form{
+    display: flex;
+    width: 95%;
 }
 
 .remove-btn{
@@ -406,8 +428,8 @@ h2 {
     font-size: 1.1em;
     margin-top: 20px;
     margin-bottom: 20px;
-    width: 100px;
-    height: 50px;
+    width: 90px;
+    height: 40px;
     color: black;
 }
 
@@ -415,6 +437,28 @@ h2 {
     background-color: #141414;
     color: white;
 }
+
+.checkout-btn{
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 1.5em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    height: 50px;
+    color: white;
+    background-color: #141414;
+    
+}
+
+.checkout-btn:hover{
+    border: 1px solid red;
+    border-radius: 5px;
+    background-color: red;
+    color: white;
+    transition: 0.2s ease;
+}
+
 /* footer */
 .footer{
     bottom: 0;

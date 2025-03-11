@@ -4,7 +4,7 @@
 {% block title %}Takizawa{% endblock %}
 
 {% block content %} 
-    <div class="cart-container">
+    <div class="cart-container d-flex flex-row">
         {% with cart_quantity=cart|length %}
             {% if cart_quantity == 0 %}
                 <div class='cart-empty'>
@@ -39,14 +39,18 @@
                             {% endwith %} 
                         {% endfor %}
                 </section>
+                <div class="cart-total sticky-top">
+                    {% with cart_quantity=cart|length %}
+                        {% if cart_quantity > 0 %}
+                            <h1 class='cart-total-text'>Total price: {{ cart.total_price }}₴</h1>
+                            <form action="#" method="post" class='cart-checkout-form'>
+                                <input type="submit" value="Checkout" class="checkout-btn">
+                                {% csrf_token %}
+                            </form>
+                        {% endif %}
+                    {% endwith %}
+                </div>  
             </div>
-            <div class="cart-total">
-                {% with cart_quantity=cart|length %}
-                    {% if cart_quantity > 0 %}
-                        <h1>Total price: {{ cart.total_price }}₴</h1>
-                    {% endif %}
-                {% endwith %}
-            </div>  
             {% endif %}
         {%endwith%}
     </div>  
