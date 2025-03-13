@@ -51,6 +51,7 @@ class Cart:
             item['total_price'] = format(item['price'] * item['quantity'], '.2f')
             yield item
 
+
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
     

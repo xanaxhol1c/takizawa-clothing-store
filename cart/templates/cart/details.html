@@ -10,7 +10,7 @@
                 <div class='cart-empty'>
                     <h1>Shopping cart is empty!</h1>
                 </div>
-            {% else%}
+            {% else %}
                 <section class="cart-section d-flex flex-column">
                     <div class="cart-title">
                         <h1>Shopping cart</h1>
@@ -43,10 +43,7 @@
                     {% with cart_quantity=cart|length %}
                         {% if cart_quantity > 0 %}
                             <h1 class='cart-total-text'>Total price: {{ cart.total_price }}₴</h1>
-                            <form action="#" method="post" class='cart-checkout-form'>
-                                <input type="submit" value="Checkout" class="checkout-btn">
-                                {% csrf_token %}
-                            </form>
+                           <a href="{% url "orders:order_create" %}" class="checkout-btn">Checkout</a>
                         {% endif %}
                     {% endwith %}
                 </div>  
