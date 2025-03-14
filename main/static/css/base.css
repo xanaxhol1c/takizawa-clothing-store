@@ -498,7 +498,13 @@ h2 {
     display: flex;
     justify-content: flex-start;
     width: 95%;
+    flex-direction: column;
 
+}
+
+.input-error-container{
+    display: flex;
+    height: 10px;
 }
 
 .order-input-field{
