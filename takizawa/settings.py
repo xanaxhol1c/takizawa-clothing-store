@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'cart',
-    'orders'
+    'orders',
+    'payments'
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 CART_SESSION_ID = 'cart'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51R30z7PscJ9OoCWAOAQtAGfCuEGelO3VlfamT8wRdB8wOLIncc5TpYFgfXVPCuWfy1cA78dAq81CYrpfNF6VDkby00csPeMfli'
+STRIPE_SECRET_KEY = 'sk_test_51R30z7PscJ9OoCWA9rrYv8KrWedmG46kGmRiK57Uw2KHydbSdDhcxaDbc57ihxHUPGAErSI3fuXw1PzdRw1ctVOI00ULtVokkg'
+STRIPE_API_VERSION = '2022-08-01'
+
+STRIPE_WEBHOOK_SECRET = 'whsec_581c80bf68ec59e8657dc69626d5b03821c63d74197411dc03f4fea0bc11347c'
