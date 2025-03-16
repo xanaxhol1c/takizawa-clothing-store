@@ -15,7 +15,7 @@
                     <div class="cart-title">
                         <h1>Shopping cart</h1>
                     </div>
-                    <div class="cart-cards d-flex flex-column">
+                    <div class="cart-cards d-flex flex-column" style="font-family: 'GalliardStd'">
                         {% for item in cart %}
                             {% with product=item.product %}
                                 <div class="cart-card d-flex">
@@ -31,7 +31,7 @@
                                     </div>
                                     <div class="cart-card-btns">
                                         <form action="{% url "cart:cart_remove" product.id%}" method="post">
-                                            <input type="submit" value="Remove" class="remove-btn">
+                                            <input type="submit" value="Remove" class="remove-btn" style="font-family: 'Old London'">
                                             {% csrf_token %}
                                         </form>
                                     </div>
@@ -42,7 +42,7 @@
                 <div class="cart-total sticky-top">
                     {% with cart_quantity=cart|length %}
                         {% if cart_quantity > 0 %}
-                            <h1 class='cart-total-text'>Total price: {{ cart.total_price }}₴</h1>
+                            <h1 class='cart-total-text'>Total price: <span style="font-family: 'GalliardStd'; font-size:0.8em;">{{ cart.total_price }}₴ </span> </h1>
                            <a href="{% url "orders:order_create" %}" class="checkout-btn">Checkout</a>
                         {% endif %}
                     {% endwith %}

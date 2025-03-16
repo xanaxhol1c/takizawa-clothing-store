@@ -20,7 +20,9 @@ def cart_add(request, product_id):
 
     print(request.session.get(settings.CART_SESSION_ID))
 
-    return redirect('cart:cart_details')
+    referer = request.META.get('HTTP_REFERER')  
+    return redirect(referer)
+
 
 @require_POST
 def cart_remove(request, product_id):

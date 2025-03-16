@@ -6,7 +6,7 @@
 {% block content %} 
     <div class='order-container'>
         <form action='' method='post' class='order-form d-flex flex-row'>
-            <div class='order-input-container'>
+            <div class='order-input-container' style="font-family: 'GalliardStd'">
                 <div class='order-input-div'>
                     <label for='id_first_name' class='order-form-label'></label>
                     <input type='text' class='order-input-field form-control form-styleprofile' id='id_first_name' 
@@ -62,11 +62,11 @@
             <div class='order-checkout-container'>
                 <h1>Checkout</h1>
                 {% for item in cart %}
-                    <li class='order-checkout-li'>{{item.quantity}}x {{item.product.name}}
+                    <li class='order-checkout-li' style="font-family: 'GalliardStd'" >{{item.quantity}}x {{item.product.name}}
                         <p>{{item.total_price}}₴</p>
                     </li>   
                 {% endfor %}
-                <h2>Total: {{ cart.total_price }}₴</h2>
+                <h2>Total: <span style="font-family: 'GalliardStd'; font-size:0.8em;">{{ cart.total_price }}₴</span></h2>
                 <p><input type='submit' class='submit-checkout-btn' value='Go to payment'></p>
                 {% csrf_token %}
             </div>

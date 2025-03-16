@@ -38,4 +38,11 @@ def stripe_webhook(request):
             order.stripe_id = session.payment_intent
             order.save()
     
+    else:
+        try:
+            order = Order.objects.get(id=session.client_reference_id)
+            order.delete()
+        except Order.DoesNotExist:
+                return HttpResponse(status=404)
+        
     return HttpResponse(status=200)

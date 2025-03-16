@@ -3,5 +3,29 @@
 {% block title %}Takizawa{% endblock %}
 
 {% block content %} 
-    <h1>Payment completed successfully!</h1>
+    <div class='payment-completed-div'>
+        <div class='payment-completed-card'>
+            <div class='payment-completed-title'>
+                <h1>Payment completed successfully!</h1>
+            </div>
+            <div class 'payment-completed-order-info d-flex flex-column' style="font-family: 'GalliardStd'">
+                <h3>Order id: {{order.id}}</h3>
+                <h3>First name: {{order.first_name}}</h3>
+                <h3>Last name: {{order.last_name}}</h3>
+                <h3>Email: {{order.email}}</h3>
+                <h3>Phone number: {{order.phone_number}}</h3>
+                <h3>City: {{order.city}}</h3>
+                <h3>Address: {{order.address}}</h3>
+                <h3>Postal code: {{order.postal_code}}</h3>
+                <h3>Status: {% if order.paid == True %}Paid{% else %}Unpaid{% endif %}</h3>
+            </div>
+            <div class='go-back-btn-container'>
+                <form action="{% url "main:index" %}" method="post" class='go-back-btn-container'>
+                    <input type="submit" value="Go back" class="go-back-btn" style="font-family: 'Old London'">
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
