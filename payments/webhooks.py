@@ -3,8 +3,10 @@ from django.conf import settings
 from django.http import HttpResponse
 import stripe.error
 from main.models import Product
-from orders.models import Order
+from orders.models import Order, OrderItem
 from django.views.decorators.csrf import csrf_exempt
+from cart.cart import Cart
+from orders.forms import OrderCreateForm
 
 
 @csrf_exempt
@@ -29,20 +31,6 @@ def stripe_webhook(request):
         session = event.data.object
 
         if session.mode == 'payment' and session.payment_status == 'paid':
-            try:
-                order = Order.objects.get(id=session.client_reference_id)
-            except Order.DoesNotExist:
-                return HttpResponse(status=404)
+            request.session['order_stripe_id'] = session.payment_intent  # Зберігаємо ID Stripe платежу
 
-            order.paid = True
-            order.stripe_id = session.payment_intent
-            order.save()
-    
-    else:
-        try:
-            order = Order.objects.get(id=session.client_reference_id)
-            order.delete()
-        except Order.DoesNotExist:
-                return HttpResponse(status=404)
-        
     return HttpResponse(status=200)
