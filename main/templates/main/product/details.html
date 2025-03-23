@@ -5,7 +5,47 @@
 {% block content %}
     <div class="detail-product d-flex flex-row">
         <div class="product-pic-container">
-            <img src="{% if product.image %} {{product.image.url}} {% else %} {% static "img/noimage.png" %} {% endif %}" class="product-img">    
+            <div class='btn-div'>
+                <button class='prev-btn'>&lsaquo;</button>
+            </div>
+            {% comment %} <img src="{% if product.image %} {{product.image.url}} {% else %} {% static "img/noimage.png" %} {% endif %}" class="product-img">     {% endcomment %}
+
+            {% if product.images.all %}
+                {% for image in product.images.all %}
+                    <img class="product-img" src="{{ image.image.url }}" style="display: none;" data-index="{{ forloop.counter0 }}">
+                {% endfor %}
+            {% else %}
+                <img src="{% static "img/noimage.png" %}" class="product-img">
+            {% endif %}
+            <div class='btn-div'>
+                <button class='next-btn'>&rsaquo;</button>
+            </div>
+            <script>
+                const images = document.querySelectorAll('.product-img');
+                const prev = document.querySelector('.prev-btn');
+                const next = document.querySelector('.next-btn');
+                let currentIndex = 0;
+
+                images[currentIndex].style.display = 'block';
+
+                if(images.length === 1){
+                    prev.style.display = 'none';
+                    next.style.display = 'none';
+                }
+                else {
+                    prev.addEventListener('click', () => {
+                        images[currentIndex].style.display = 'none';
+                        currentIndex = (currentIndex - 1 + images.length) % images.length;
+                        images[currentIndex].style.display = 'block';               
+                    });
+
+                    next.addEventListener('click', () => {
+                        images[currentIndex].style.display = 'none';
+                        currentIndex = (currentIndex + 1) % images.length;
+                        images[currentIndex].style.display = 'block';               
+                    });
+                }
+            </script>
         </div>
         <div class="product-description">
             <h1>{{product.name}}</h1>

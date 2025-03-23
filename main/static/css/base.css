@@ -283,8 +283,34 @@ h2 {
     display: flex;
     justify-content: center;
     overflow: hidden;
+    margin-top: 25px;
 }
 
+.btn-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -60px;
+    border-style: none;
+}
+
+.prev-btn, .next-btn {
+    color: black;
+    background-color: white;
+    border: none;
+    font-size: 4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 40px;
+}
+/* .prev-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20%;
+} */
 
 .product-img{
     max-height: 550px;
@@ -293,6 +319,7 @@ h2 {
     height: fit-content; 
     object-fit: cover; 
 }
+
 
 .product-description{
     max-width: 40%;
