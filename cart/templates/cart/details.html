@@ -22,9 +22,12 @@
                                     <div class="cart-card-pic-container">
                                         <img src="{% if product.image %} {{product.image.url}} {% else %} {% static "img/noimage.png" %} {% endif %}" class="cart-product-img">    
                                     </div>
-                                    <section  class="cart-card-info d-flex flex-column"> 
+                                    <section class="cart-card-info d-flex flex-column"> 
                                         <h5 class="cart-card-name">{{product.name}}</h5>
-                                        <h5 class="cart-card-q">Quantity: {{item.quantity}}</h5>
+                                        <div class='cart-card-additional-info d-flex flex-row'>
+                                            <h5 class="cart-card-q">Quantity: {{item.quantity}}</h5>
+                                            <h5 class="cart-card-q">Size: {{item.size}}</h5>
+                                        </div>
                                     </section>
                                     <div class="cart-card-price">
                                         <h5 class="cart-card-price-text">Price: {{item.total_price}}₴</h5>
@@ -32,6 +35,7 @@
                                     <div class="cart-card-btns">
                                         <form action="{% url "cart:cart_remove" product.id%}" method="post">
                                             <input type="submit" value="Remove" class="remove-btn" style="font-family: 'Old London'">
+                                            <input type="hidden" name="size" value="{{ item.size }}">
                                             {% csrf_token %}
                                         </form>
                                     </div>

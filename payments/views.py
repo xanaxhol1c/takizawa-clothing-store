@@ -15,13 +15,6 @@ stripe.api_version = settings.STRIPE_API_VERSION
 
 
 def payment_process(request):
-    # order_id = request.session.get('order_id', None)
-    
-    # order = get_object_or_404(Order, id=order_id)
-
-    # if not order:
-    #     return HttpResponse("Order ID not found.", status=400)
-    
     cart = Cart(request)
     if request.method == 'GET':
         success_url = request.build_absolute_uri(reverse('payments:completed'))
@@ -77,7 +70,8 @@ def payment_completed(request):
                 order=order,
                 product=item['product'],
                 price=item['price'],
-                quantity=item['quantity']
+                quantity=item['quantity'],
+                size = item['size']
             )
         
         cart.clear()

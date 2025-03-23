@@ -16,6 +16,7 @@ def cart_add(request, product_id):
         cd = form.cleaned_data
         cart.add(product=product,
                  quantity=cd['quantity'],
+                 size=cd['size'],
                  override_quantity=cd['override'])
 
     print(request.session.get(settings.CART_SESSION_ID))
@@ -27,9 +28,12 @@ def cart_add(request, product_id):
 @require_POST
 def cart_remove(request, product_id):
     cart = Cart(request)
+        
     product = get_object_or_404(Product, id=product_id)
 
-    cart.remove(product)
+    size = request.POST.get('size')
+
+    cart.remove(product, size)
 
     return redirect('cart:cart_details')
 

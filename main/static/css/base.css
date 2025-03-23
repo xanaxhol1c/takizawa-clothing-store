@@ -383,6 +383,13 @@ h2 {
     gap: 5px;
 }
 
+.cart-card-additional-info{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+
 .cart-card-price{
     display: flex;
     width: 32.5%;
