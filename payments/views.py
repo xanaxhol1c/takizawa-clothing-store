@@ -10,6 +10,9 @@ from django.http import HttpResponse
 
 from cart.cart import Cart
 
+from django.core.mail import send_mail
+
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 stripe.api_version = settings.STRIPE_API_VERSION
 
@@ -81,6 +84,41 @@ def payment_completed(request):
 
     order_id = request.session.get('order_id', None)
     order = get_object_or_404(Order, id=order_id)
+
+    message = f"""
+    Dear {order.first_name} {order.last_name},
+
+    We are pleased to inform you that your payment has been successfully processed! 🎉  
+
+    Here are the details of your order:  
+    - Order ID: {order.id}  
+    - Name: {order.first_name} {order.last_name}  
+    - Email: {order.email}  
+    - Phone: {order.phone_number}  
+    - Shipping Address: {order.address}, {order.city}, {order.postal_code}  
+
+    Ordered items:
+    """
+
+    for item in order.items.all():
+        message += f"- {item.product.name} (Size: {item.size}) - {item.quantity} pcs - ₴{item.price * item.quantity}\n"
+
+    message += f"""
+
+    Total Amount: ₴{order.get_total_cost()}  
+
+    Your order is now being processed, and we will update you once it has been shipped.  
+
+    Thank you for choosing Takizawa Shizoku!  
+
+    Best regards,  
+    Takizawa Shizoku Team  
+    """
+
+    title = "Order Confirmation - Takizawa Shizoku"
+    customer_email = order.email
+
+    send_mail(title, message, settings.EMAIL_HOST_USER, [customer_email], fail_silently=True)
 
     return render(request, 'payments/completed.html', {'order' : order})
 

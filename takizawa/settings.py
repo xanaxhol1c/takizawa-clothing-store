@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -140,8 +144,17 @@ CART_SESSION_ID = 'cart'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 3600
 
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51R30z7PscJ9OoCWAOAQtAGfCuEGelO3VlfamT8wRdB8wOLIncc5TpYFgfXVPCuWfy1cA78dAq81CYrpfNF6VDkby00csPeMfli'
-STRIPE_SECRET_KEY = 'sk_test_51R30z7PscJ9OoCWA9rrYv8KrWedmG46kGmRiK57Uw2KHydbSdDhcxaDbc57ihxHUPGAErSI3fuXw1PzdRw1ctVOI00ULtVokkg'
-STRIPE_API_VERSION = '2022-08-01'
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_API_VERSION = os.getenv('STRIPE_API_VERSION')
 
-STRIPE_WEBHOOK_SECRET = 'whsec_581c80bf68ec59e8657dc69626d5b03821c63d74197411dc03f4fea0bc11347c'
+STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
+
+
+
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
