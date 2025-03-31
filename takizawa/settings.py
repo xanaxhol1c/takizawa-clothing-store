@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
+import dj_database_url
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-me9v_c@u^@o1#2l^$n*9i26y$%$!y+6jc24cl*hi#(y8(0mq)8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG_STATUS')
 
 ALLOWED_HOSTS = []
 
@@ -82,17 +84,23 @@ WSGI_APPLICATION = 'takizawa.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'takizawaDB',
-        'USER': 'takizawa',
-        'PASSWORD' : 'postgretakizawa',
-        'HOST': 'localhost',
-        'PORT': '5432'
-    }
-}
+DATABASE_INTERNAL = os.getenv('DATABASE_INTERNAL')
 
+if DATABASE_INTERNAL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_INTERNAL)
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'takizawaDB',
+            'USER': 'takizawa',
+            'PASSWORD': 'postgretakizawa',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
