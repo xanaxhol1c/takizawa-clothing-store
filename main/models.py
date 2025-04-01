@@ -56,5 +56,5 @@ class ProductImage(models.Model):
     image = CloudinaryField('image')
 
     def __str__(self):
-        return f'{self.product.name} - {self.image.name}'
+        return f'{self.product.name} - {self.image.split("/")[-1]}'
 
