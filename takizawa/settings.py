@@ -46,8 +46,18 @@ INSTALLED_APPS = [
     'main',
     'cart',
     'orders',
-    'payments'
+    'payments',
+    'cloudinary', 
+    'cloudinary_storage'
 ]
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUD_API_KEY'),
+    'API_SECRET': os.getenv('CLOUD_API_SECRET')
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -146,9 +156,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = 'media/'
+MEDIA_URL = os.getenv('CLOUDINARY_URL')
 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = ''
 
 CART_SESSION_ID = 'cart'
 
