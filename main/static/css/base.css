@@ -397,11 +397,10 @@ h2 {
 } */
 
 .product-img{
-    min-width: 200px;
+    min-width: 150px;
     max-width: 550px;
     width: 100%; 
     height: fit-content; 
-    object-fit: cover; 
 }
 
 
@@ -650,7 +649,6 @@ h2 {
     }
 
     .cart-product-img {
-        flex: 0 0 50%;
         max-height: 350px;
         width: 100%;
         height: auto;
