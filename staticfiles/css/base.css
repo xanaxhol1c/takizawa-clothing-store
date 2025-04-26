@@ -400,7 +400,7 @@ h2 {
     min-width: 150px;
     max-width: 550px;
     width: 100%; 
-    height: fit-content; 
+    height: auto; 
 }
 
 
