@@ -4,14 +4,14 @@
 {% block title %}Takizawa{% endblock %}
 
 {% block content %} 
-    <div class="cart-container d-flex flex-row">
+    <div class="cart-container d-flex">
         {% with cart_quantity=cart|length %}
             {% if cart_quantity == 0 %}
                 <div class='cart-empty'>
                     <h1>Shopping cart is empty!</h1>
                 </div>
             {% else %}
-                <section class="cart-section d-flex flex-column">
+                <div class="cart-section d-flex flex-column">
                     <div class="cart-title">
                         <h1>Shopping cart</h1>
                     </div>
@@ -42,7 +42,8 @@
                                 </div>
                             {% endwith %} 
                         {% endfor %}
-                </section>
+                    </div> 
+                </div>
                 <div class="cart-total sticky-top">
                     {% with cart_quantity=cart|length %}
                         {% if cart_quantity > 0 %}
@@ -50,8 +51,7 @@
                            <a href="{% url "orders:order_create" %}" class="checkout-btn">Checkout</a>
                         {% endif %}
                     {% endwith %}
-                </div>  
-            </div>
+                </div> 
             {% endif %}
         {%endwith%}
     </div>  
