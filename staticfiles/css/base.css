@@ -378,17 +378,35 @@ h2 {
     border-style: none;
 }
 
-.prev-btn, .next-btn {
-    color: black;
-    background-color: white;
-    border: none;
-    font-size: 4em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 25px;
-    height: 40px;
+@media (max-width: 768px) {
+    .prev-btn{
+        color: black;
+        background-color: white;
+        border: none;
+        font-size: 4em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25px;
+        height: 40px;
+        margin-left: 10px;
+    }
+    
+    .next-btn 
+    {
+        color: black;
+        background-color: white;
+        border: none;
+        font-size: 4em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25px;
+        height: 40px;
+        margin-right: 10px;
+    }
 }
+
 /* .prev-btn{
     display: flex;
     justify-content: center;
@@ -399,7 +417,7 @@ h2 {
 .product-img {
     width: 100%;
     height: auto;
-    min-width: 275px;
+    min-width: 300px;
     max-width: 550px;
     object-fit: contain;
 }
