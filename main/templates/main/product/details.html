@@ -54,7 +54,7 @@
             {% if product.discount %}
                 <h2 class="pt-3">{{product.sell_price}}₴</h2>
             {% else %}
-                <h2 class="pt-3">{{product.price}}₴</h2>
+                <h2 class="pt-2">{{product.price}}₴</h2>
             {% endif %}
 
             <form action="{% url "cart:cart_add" product.id %}" class="qform" method="post">
