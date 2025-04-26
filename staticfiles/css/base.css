@@ -347,123 +347,62 @@ h2 {
 }
 
 
-/* all classes for item description page. used in details.html*/
-
-.detail-product{
-    width: 100%;
-    justify-content: space-evenly;
-}
-
-@media (max-width: 768px) {
-    .detail-product{
-        display: flex;
-        width: 100%;
-        justify-content: space-evenly;
-        flex-direction: column;
-    }
-}
-
-.product-pic-container{
+.product-pic-container {
     position: relative;
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 25px;
 }
 
-.btn-div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: -60px;
-    border-style: none;
+.btn-div {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
 }
 
-@media (max-width: 768px) {
-    .prev-btn{
-        color: black;
-        background-color: white;
-        border: none;
-        font-size: 4em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 25px;
-        height: 40px;
-        margin-left: 40px;
-    }
-    
-    .next-btn 
-    {
-        color: black;
-        background-color: white;
-        border: none;
-        font-size: 4em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 25px;
-        height: 40px;
-        margin-right: 40px;
-    }
-}
-
-/* .prev-btn{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 20%;
-} */
-
-.product-img {
-    width: 100%;
-    height: auto;
-    min-width: 300px;
-    max-width: 550px;
-    object-fit: contain;
-}
-
-
-.product-description{
-    margin-top: 25px;
-    position: relative;
-    justify-content: flex-start;
-    font-size: 1.25em;
-}
-
-.description-text{
-    font-size: 1.25em;
-    white-space: pre;
-}
-
-
-
-.cart-btn{
-    border: 1px solid #000000;
-    border-radius: 5px;
-    font-size: 1.1em;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    width: 180px;
-    height: 50px;
+.prev-btn {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     color: black;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    font-size: 3em;
+    width: 40px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.next-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: black;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    font-size: 3em;
+    width: 40px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {
-    .cart-btn{
-        border: 1px solid #000000;
-        border-radius: 5px;
-        font-size: 1.1em;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        width: 100%;
+    .prev-btn, .next-btn {
+        font-size: 2.5em;
+        width: 35px;
         height: 50px;
-        color: black;
     }
-}
-
-.cart-btn:hover{
-    background-color: #141414;
-    color: white;
 }
 
 /* classes for cart page - details.html*/
