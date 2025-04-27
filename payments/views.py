@@ -49,9 +49,7 @@ def payment_process(request):
 
         session_data = {
             'mode': 'payment',
-            'success_url': request.build_absolute_uri(
-                reverse('payments:completed') + '?session_id={CHECKOUT_SESSION_ID}'
-            ),
+            'success_url' : f"{request.build_absolute_uri(reverse('payments:completed'))}?session_id={session.id}",
             'cancel_url': request.build_absolute_uri(reverse('payments:canceled')),
             'line_items': line_items,
             'metadata': {
