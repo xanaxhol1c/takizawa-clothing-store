@@ -66,7 +66,10 @@ def stripe_webhook(request):
                             size=item.get('size', '')
                         )
                     
+                    request.session['customer_order_id'] = order.id
+                    request.session.modified = True
                     logger.info(f"Order {order.id} created successfully")
+
                 else:
                     logger.error(f"Order form errors: {form.errors}")
 
