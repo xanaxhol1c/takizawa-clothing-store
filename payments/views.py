@@ -60,7 +60,7 @@ def payment_process(request):
                 'city': order_data.get('city', ''),
                 'address': order_data.get('address', ''),
                 'postal_code': order_data.get('postal_code', ''),
-                'items': json.dumps(items_for_metadata)  # Зберігаємо товари у вигляді JSON
+                'items': json.dumps(items_for_metadata)  
             }
         }
 
@@ -69,45 +69,57 @@ def payment_process(request):
 
     
 def payment_completed(request):
-    order_id = request.session.get('customer_order_id', None)
-    order = get_object_or_404(Order, id=order_id)
+    session_id = request.GET.get('session_id')
+    try:
+        # Отримуємо сесію з Stripe
+        session = stripe.checkout.Session.retrieve(session_id)
+        
+        # Отримуємо замовлення з БД
+        order = Order.objects.get(id=session.metadata['customer_order_id'])
 
-    message = f"""
-    Dear {order.first_name} {order.last_name},
+        message = f"""
+        Dear {order.first_name} {order.last_name},
 
-    We are pleased to inform you that your payment has been successfully processed! 🎉  
+        We are pleased to inform you that your payment has been successfully processed! 🎉  
 
-    Here are the details of your order:  
-    - Order ID: {order.id}  
-    - Name: {order.first_name} {order.last_name}  
-    - Email: {order.email}  
-    - Phone: {order.phone_number}  
-    - Shipping Address: {order.address}, {order.city}, {order.postal_code}  
+        Here are the details of your order:  
+        - Order ID: {order.id}  
+        - Name: {order.first_name} {order.last_name}  
+        - Email: {order.email}  
+        - Phone: {order.phone_number}  
+        - Shipping Address: {order.address}, {order.city}, {order.postal_code}  
 
-    Ordered items:
-    """
+        Ordered items:
+        """
 
-    for item in order.items.all():
-        message += f"- {item.product.name} (Size: {item.size}) - {item.quantity} pcs - ₴{item.price * item.quantity}\n"
+        for item in order.items.all():
+            message += f"- {item.product.name} (Size: {item.size}) - {item.quantity} pcs - ₴{item.price * item.quantity}\n"
 
-    message += f"""
+        message += f"""
 
-    Total Amount: ₴{order.get_total_cost()}  
+        Total Amount: ₴{order.get_total_cost()}  
 
-    Your order is now being processed, and we will update you once it has been shipped.  
+        Your order is now being processed, and we will update you once it has been shipped.  
 
-    Thank you for choosing Takizawa Shizoku!  
+        Thank you for choosing Takizawa Shizoku!  
 
-    Best regards,  
-    Takizawa Shizoku Team  
-    """
+        Best regards,  
+        Takizawa Shizoku Team  
+        """
 
-    title = "Order Confirmation - Takizawa Shizoku"
-    customer_email = order.email
+        title = "Order Confirmation - Takizawa Shizoku"
+        customer_email = order.email
 
-    send_mail(title, message, settings.EMAIL_HOST_USER, [customer_email], fail_silently=True)
+        send_mail(title, message, settings.EMAIL_HOST_USER, [customer_email], fail_silently=True)
 
-    return render(request, 'payments/completed.html', {'order' : order})
+        return render(request, 'payments/completed.html', {'order' : order})
+    
+    except stripe.error.StripeError as e:
+        return HttpResponse("Payment verification failed", status=400)
+    except Order.DoesNotExist:
+        return HttpResponse("Order not found", status=404)
+    except Exception as e:
+        return HttpResponse("Internal server error", status=500)
 
 def payment_canceled(request):
     return render(request, 'payments/canceled.html')
