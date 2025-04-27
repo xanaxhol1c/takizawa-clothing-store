@@ -1,15 +1,15 @@
-import stripe
-import json
-import logging
-from django.conf import settings
-from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from orders.models import Order, OrderItem
-from orders.forms import OrderCreateForm
+from django.http import HttpResponse
+import stripe
+from django.conf import settings
 from decimal import Decimal
 
+from orders.models import Order, OrderItem
+import json
 
-logger = logging.getLogger(__name__)
+import logging
+
+logger = logging.getLogger(name)
 
 @csrf_exempt
 def stripe_webhook(request):
@@ -23,27 +23,22 @@ def stripe_webhook(request):
             settings.STRIPE_WEBHOOK_SECRET
         )
     except ValueError as e:
-        logger.error(f"Invalid payload: {str(e)}")
+        logger.error(f"Invalid payload: {e}")
         return HttpResponse(status=400)
     except stripe.error.SignatureVerificationError as e:
-        logger.error(f"Invalid signature: {str(e)}")
+        logger.error(f"Invalid signature: {e}")
         return HttpResponse(status=400)
     except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
+        logger.error(f"Unexpected error: {e}")
         return HttpResponse(status=400)
 
     if event.type == 'checkout.session.completed':
         session = event.data.object
-        
         if session.mode == 'payment' and session.payment_status == 'paid':
             try:
-                # Перевіряємо, чи замовлення вже існує
-                if Order.objects.filter(stripe_id=session.payment_intent).exists():
-                    logger.info(f"Order already exists for payment intent {session.payment_intent}")
-                    return HttpResponse(status=200)
-                
                 metadata = session.metadata
                 
+                # Створення замовлення
                 order = Order.objects.create(
                     first_name=metadata.get('first_name', ''),
                     last_name=metadata.get('last_name', ''),
@@ -53,28 +48,24 @@ def stripe_webhook(request):
                     address=metadata.get('address', ''),
                     postal_code=metadata.get('postal_code', ''),
                     paid=True,
-                    stripe_id=session.payment_intent  # Тепер це поле існує
+                    stripe_id=session.payment_intent
                 )
 
-                try:
-                    items = json.loads(metadata.get('items', '[]'))
-                    for item in items:
-                        OrderItem.objects.create(
-                            order=order,
-                            product_id=item['product_id'],
-                            price=Decimal(item['price']),
-                            quantity=item['quantity'],
-                            size=item.get('size', '')
-                        )
-                except (json.JSONDecodeError, KeyError) as e:
-                    logger.error(f"Error parsing order items: {str(e)}")
-                    order.delete()
-                    return HttpResponse(status=400)
-
-                logger.info(f"Successfully created order {order.id}")
+                # Додавання товарів
+                items = json.loads(metadata.get('items', '[]'))
+                for item in items:
+                    OrderItem.objects.create(
+                        order=order,
+                        product_id=item['product_id'],
+                        price=item['price'],
+                        quantity=item['quantity'],
+                        size=item.get('size', '')
+                    )
                 
+                logger.info(f"Order {order.id} created successfully")
+
             except Exception as e:
-                logger.error(f"Error creating order: {str(e)}")
+                logger.error(f"Error processing order: {e}")
                 return HttpResponse(status=500)
 
     return HttpResponse(status=200)
