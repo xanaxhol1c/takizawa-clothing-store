@@ -32,5 +32,34 @@ def stripe_webhook(request):
 
         if session.mode == 'payment' and session.payment_status == 'paid':
             request.session['order_stripe_id'] = session.payment_intent  # Зберігаємо ID Stripe платежу
+            cart = Cart(request)
 
+            form_data = {
+                'first_name': request.session['order']['first_name'],
+                'last_name': request.session['order']['last_name'],
+                'email': request.session['order']['email'],
+                'phone_number': request.session['order']['phone_number'],
+                'city': request.session['order']['city'],
+                'address': request.session['order']['address'],
+                'postal_code': request.session['order']['postal_code'],
+            }
+
+            form = OrderCreateForm(form_data)
+
+            if form.is_valid():
+                order = form.save(commit=False)
+                order.paid = True  
+                order.stripe_id = request.session.get('order_stripe_id')
+                order.save()
+
+                for item in cart:
+                    OrderItem.objects.create(
+                        order=order,
+                        product=item['product'],
+                        price=item['price'],
+                        quantity=item['quantity'],
+                        size = item['size']
+                    )
+            request.session.modified = True
+            cart.clear()
     return HttpResponse(status=200)
