@@ -20,20 +20,16 @@ stripe.api_version = settings.STRIPE_API_VERSION
 def payment_process(request):
     cart = Cart(request)
     if request.method == 'GET':
-        success_url = request.build_absolute_uri(reverse('payments:completed'))
-
-        cancel_url = request.build_absolute_uri(reverse('payments:canceled'))
-
-        session_data = {
-            'mode': 'payment',
-            # 'client_reference_id': order.id,
-            'success_url' : success_url,
-            'cancel_url' : cancel_url,
-            'line_items': []
-        }
+        # Отримуємо дані форми з сесії (якщо вони там є)
+        order_data = request.session.get('order', {})
+        
+        # Готуємо товари для metadata
+        line_items = []
+        items_for_metadata = []
+        
         for item in cart:
             price = item['product'].sell_price()
-            session_data['line_items'].append({ 
+            line_items.append({
                 'price_data': {
                     'unit_amount': int(price * Decimal(100)),
                     'currency': 'uah',
@@ -43,6 +39,30 @@ def payment_process(request):
                 },
                 'quantity': item['quantity']
             })
+            
+            items_for_metadata.append({
+                'product_id': item['product'].id,
+                'price': str(price),
+                'quantity': item['quantity'],
+                'size': item.get('size', '')
+            })
+
+        session_data = {
+            'mode': 'payment',
+            'success_url': request.build_absolute_uri(reverse('payments:completed')),
+            'cancel_url': request.build_absolute_uri(reverse('payments:canceled')),
+            'line_items': line_items,
+            'metadata': {
+                'first_name': order_data.get('first_name', ''),
+                'last_name': order_data.get('last_name', ''),
+                'phone_number': order_data.get('phone_number', ''),
+                'city': order_data.get('city', ''),
+                'address': order_data.get('address', ''),
+                'postal_code': order_data.get('postal_code', ''),
+                'items': json.dumps(items_for_metadata)  # Зберігаємо товари у вигляді JSON
+            }
+        }
+
         session = stripe.checkout.Session.create(**session_data)
         return redirect(session.url, code=303)
 
