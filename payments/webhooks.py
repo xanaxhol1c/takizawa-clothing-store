@@ -7,9 +7,6 @@ from decimal import Decimal
 from orders.models import Order, OrderItem
 import json
 
-import logging
-
-logger = logging.getLogger(name)
 
 @csrf_exempt
 def stripe_webhook(request):
@@ -23,13 +20,10 @@ def stripe_webhook(request):
             settings.STRIPE_WEBHOOK_SECRET
         )
     except ValueError as e:
-        logger.error(f"Invalid payload: {e}")
         return HttpResponse(status=400)
     except stripe.error.SignatureVerificationError as e:
-        logger.error(f"Invalid signature: {e}")
         return HttpResponse(status=400)
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
         return HttpResponse(status=400)
 
     if event.type == 'checkout.session.completed':
@@ -61,11 +55,8 @@ def stripe_webhook(request):
                         quantity=item['quantity'],
                         size=item.get('size', '')
                     )
-                
-                logger.info(f"Order {order.id} created successfully")
 
             except Exception as e:
-                logger.error(f"Error processing order: {e}")
                 return HttpResponse(status=500)
 
     return HttpResponse(status=200)

@@ -13,9 +13,6 @@ from cart.cart import Cart
 
 from django.core.mail import send_mail
 
-import logging
-
-logger = logging.getLogger(name)
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 stripe.api_version = settings.STRIPE_API_VERSION
@@ -95,13 +92,10 @@ def payment_completed(request):
         return render(request, 'payments/completed.html', {'order': order})
     
     except stripe.error.StripeError as e:
-        logger.error(f"Stripe error: {e}")
         return HttpResponse("Payment verification failed", status=400)
     except Order.DoesNotExist:
-        logger.error("Order not found")
         return HttpResponse("Order not found", status=404)
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
         return HttpResponse("Internal server error", status=500)
     
 def payment_canceled(request):
