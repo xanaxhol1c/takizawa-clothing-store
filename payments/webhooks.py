@@ -13,8 +13,7 @@ logger = logging.getLogger(__name__)
 def stripe_webhook(request):
     payload = request.body
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE', '')
-    event = None
-
+    
     try:
         event = stripe.Webhook.construct_event(
             payload,
@@ -22,22 +21,30 @@ def stripe_webhook(request):
             settings.STRIPE_WEBHOOK_SECRET
         )
     except ValueError as e:
-        logger.error(f"Invalid payload: {e}")
+        logger.error(f"Invalid payload: {str(e)}")
         return HttpResponse(status=400)
     except stripe.error.SignatureVerificationError as e:
-        logger.error(f"Invalid signature: {e}")
+        logger.error(f"Invalid signature: {str(e)}")
         return HttpResponse(status=400)
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
+        logger.error(f"Unexpected error: {str(e)}")
         return HttpResponse(status=400)
 
     if event.type == 'checkout.session.completed':
         session = event.data.object
+        
+        # Перевіряємо, чи оплата пройшла успішно
         if session.mode == 'payment' and session.payment_status == 'paid':
             try:
+                # Перевіряємо, чи замовлення вже існує
+                if Order.objects.filter(stripe_id=session.payment_intent).exists():
+                    logger.info(f"Order already exists for payment intent {session.payment_intent}")
+                    return HttpResponse(status=200)
+                
+                # Отримуємо метадані
                 metadata = session.metadata
                 
-                # Створюємо замовлення ТІЛЬКИ при успішній оплаті
+                # Створюємо замовлення
                 order = Order.objects.create(
                     first_name=metadata.get('first_name', ''),
                     last_name=metadata.get('last_name', ''),
@@ -50,21 +57,26 @@ def stripe_webhook(request):
                     stripe_id=session.payment_intent
                 )
 
-                # Додаємо товари
-                items = json.loads(metadata.get('items', '[]'))
-                for item in items:
-                    OrderItem.objects.create(
-                        order=order,
-                        product_id=item['product_id'],
-                        price=item['price'],
-                        quantity=item['quantity'],
-                        size=item.get('size', '')
-                    )
-                
-                logger.info(f"Order {order.id} created successfully")
+                # Додаємо товари до замовлення
+                try:
+                    items = json.loads(metadata.get('items', '[]'))
+                    for item in items:
+                        OrderItem.objects.create(
+                            order=order,
+                            product_id=item['product_id'],
+                            price=Decimal(item['price']),
+                            quantity=item['quantity'],
+                            size=item.get('size', '')
+                        )
+                except (json.JSONDecodeError, KeyError) as e:
+                    logger.error(f"Error parsing order items: {str(e)}")
+                    order.delete()  # Видаляємо замовлення, якщо не вдалося додати товари
+                    return HttpResponse(status=400)
 
+                logger.info(f"Successfully created order {order.id}")
+                
             except Exception as e:
-                logger.error(f"Error processing order: {e}")
+                logger.error(f"Error creating order: {str(e)}")
                 return HttpResponse(status=500)
 
     return HttpResponse(status=200)
