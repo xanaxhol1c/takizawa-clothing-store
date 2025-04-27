@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from orders.models import Order, OrderItem
 from orders.forms import OrderCreateForm
+from decimal import Decimal
+
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +35,6 @@ def stripe_webhook(request):
     if event.type == 'checkout.session.completed':
         session = event.data.object
         
-        # Перевіряємо, чи оплата пройшла успішно
         if session.mode == 'payment' and session.payment_status == 'paid':
             try:
                 # Перевіряємо, чи замовлення вже існує
@@ -41,10 +42,8 @@ def stripe_webhook(request):
                     logger.info(f"Order already exists for payment intent {session.payment_intent}")
                     return HttpResponse(status=200)
                 
-                # Отримуємо метадані
                 metadata = session.metadata
                 
-                # Створюємо замовлення
                 order = Order.objects.create(
                     first_name=metadata.get('first_name', ''),
                     last_name=metadata.get('last_name', ''),
@@ -54,10 +53,9 @@ def stripe_webhook(request):
                     address=metadata.get('address', ''),
                     postal_code=metadata.get('postal_code', ''),
                     paid=True,
-                    stripe_id=session.payment_intent
+                    stripe_id=session.payment_intent  # Тепер це поле існує
                 )
 
-                # Додаємо товари до замовлення
                 try:
                     items = json.loads(metadata.get('items', '[]'))
                     for item in items:
@@ -70,7 +68,7 @@ def stripe_webhook(request):
                         )
                 except (json.JSONDecodeError, KeyError) as e:
                     logger.error(f"Error parsing order items: {str(e)}")
-                    order.delete()  # Видаляємо замовлення, якщо не вдалося додати товари
+                    order.delete()
                     return HttpResponse(status=400)
 
                 logger.info(f"Successfully created order {order.id}")
