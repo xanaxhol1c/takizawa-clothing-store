@@ -21,7 +21,6 @@ stripe.api_version = settings.STRIPE_API_VERSION
 def payment_process(request):
     cart = Cart(request)
     if request.method == 'GET':
-        # Отримуємо дані форми з сесії (якщо вони там є)
         order_data = request.session.get('order', {})
         
         # Готуємо товари для metadata
@@ -50,7 +49,9 @@ def payment_process(request):
 
         session_data = {
             'mode': 'payment',
-            'success_url': request.build_absolute_uri(reverse('payments:completed')),
+            'success_url': request.build_absolute_uri(
+                reverse('payments:completed') + '?session_id={CHECKOUT_SESSION_ID}'
+            ),
             'cancel_url': request.build_absolute_uri(reverse('payments:canceled')),
             'line_items': line_items,
             'metadata': {
@@ -60,7 +61,7 @@ def payment_process(request):
                 'city': order_data.get('city', ''),
                 'address': order_data.get('address', ''),
                 'postal_code': order_data.get('postal_code', ''),
-                'items': json.dumps(items_for_metadata)  
+                'items': json.dumps(items_for_metadata)
             }
         }
 
@@ -70,12 +71,12 @@ def payment_process(request):
     
 def payment_completed(request):
     session_id = request.GET.get('session_id')
+    if not session_id:
+        return HttpResponse("Missing session ID", status=400)
     try:
-        # Отримуємо сесію з Stripe
         session = stripe.checkout.Session.retrieve(session_id)
         
-        # Отримуємо замовлення з БД
-        order = Order.objects.get(id=session.metadata['customer_order_id'])
+        order = Order.objects.get(stripe_id=session.payment_intent)
 
         message = f"""
         Dear {order.first_name} {order.last_name},
