@@ -196,32 +196,46 @@ h2 {
 
 /* classes for shop list display. for now - list.html */
 
-.list-container{
+.list-container {
     display: flex;
-    flex-wrap: 1;
+    flex-wrap: wrap;
+    width: 100%;
+    position: relative;
 }
 
-@media (max-width: 768px) {
-    .list-container{
-        display: flex;
-        flex-wrap: 1;
-        gap: 40px;
-    }
-}
-
-.category-sidebar{
+.category-sidebar {
     position: relative;
     width: 25%;
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
+}
+
+.home-section {
+    width: 75%;
+}
+
+@media (max-width: 768px) {
+    .list-container {
+        flex-direction: column;
+    }
+
+    .category-sidebar {
+        width: 100%;
+        display: flex; 
+        margin-bottom: 20px;
+        background: #f8f8f8;
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    .home-section {
+        width: 100%;
+    }
 }
 
 .sidebar-category-name{
     color: #000000;
-}
-
-.home-section{
-    width: 75%;
 }
 
 .home-cards{
@@ -230,6 +244,7 @@ h2 {
     gap: 20px; 
     align-items: flex-start;
     margin-bottom: 10px;
+    width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -245,7 +260,7 @@ h2 {
     margin-top: 0;
     box-sizing: border-box;
     max-width: 225px;
-    height: 425px;
+    height: 450px;
     margin-bottom: 10px;
 }
 
@@ -261,10 +276,20 @@ h2 {
 
 .img-card{
     flex: 0 0 50%;
-    max-height: 450px;
+    max-height: 550px;
     width: 100%;
     height: auto;
     
+}
+
+@media (max-width: 768px) {
+    .img-card{
+        flex: 0 0 50%;
+        max-height: 700px;
+        width: 100%;
+        height: auto;
+        
+    }
 }
 
 .title-card {
@@ -352,6 +377,7 @@ h2 {
 .detail-product{
     width: 100%;
     justify-content: space-evenly;
+    gap: 30px;
 }
 
 @media (max-width: 768px) {
@@ -397,10 +423,11 @@ h2 {
 } */
 
 .product-img{
-    min-width: 150px;
+    min-width: 250px;
     max-width: 550px;
     width: 100%; 
-    height: fit-content; 
+    height: auto; 
+    object-fit: contain;
 }
 
 
@@ -446,6 +473,32 @@ h2 {
     background-color: #141414;
     color: white;
 }
+
+.img-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-click-zone, .right-click-zone {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.left-click-zone {
+    left: 0;
+}
+
+.right-click-zone {
+    right: 0;
+}
+
 
 /* classes for cart page - details.html*/
 
@@ -572,6 +625,7 @@ h2 {
     margin-bottom: 20px;
     width: 90px;
     height: 40px;
+    background-color: white;
     color: black;
 }
 
