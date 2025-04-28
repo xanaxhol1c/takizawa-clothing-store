@@ -396,12 +396,11 @@ h2 {
     height: 20%;
 } */
 
-.product-img {
-    width: 100%;
-    height: auto;
-    min-width: 250px;
+.product-img{
+    min-width: 150px;
     max-width: 550px;
-    object-fit: contain;
+    width: 100%; 
+    height: fit-content; 
 }
 
 
