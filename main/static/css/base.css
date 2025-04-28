@@ -447,6 +447,32 @@ h2 {
     color: white;
 }
 
+.img-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-click-zone, .right-click-zone {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.left-click-zone {
+    left: 0;
+}
+
+.right-click-zone {
+    right: 0;
+}
+
+
 /* classes for cart page - details.html*/
 
 .cart-container{
