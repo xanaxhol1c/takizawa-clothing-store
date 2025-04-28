@@ -397,11 +397,10 @@ h2 {
 } */
 
 .product-img{
-    min-width: 250px;
+    min-width: 150px;
     max-width: 550px;
     width: 100%; 
-    height: auto;
-    object-fit: contain; 
+    height: fit-content; 
 }
 
 
@@ -573,7 +572,7 @@ h2 {
     margin-bottom: 20px;
     width: 90px;
     height: 40px;
-    background-color: white;
+    color: black;
 }
 
 .remove-btn:hover{
