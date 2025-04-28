@@ -352,6 +352,7 @@ h2 {
 .detail-product{
     width: 100%;
     justify-content: space-evenly;
+    gap: 30px;
 }
 
 @media (max-width: 768px) {
