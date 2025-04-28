@@ -5,48 +5,43 @@
 {% block content %}
     <div class="detail-product d-flex">
         <div class="product-pic-container">
-            <div class='btn-div'>
-                <button class='prev-btn'>&lsaquo;</button>
+            <div class="img-wrapper">
+                {% if product.images.all %}
+                    {% for image in product.images.all %}
+                        <img class="product-img" src="{{ image.image.url }}" style="display: none;" data-index="{{ forloop.counter0 }}">
+                    {% endfor %}
+                {% else %}
+                    <img src="{% static "img/noimage.png" %}" class="product-img">
+                {% endif %}
+                <div class="left-click-zone"></div>
+                <div class="right-click-zone"></div>
             </div>
-            {% comment %} <img src="{% if product.image %} {{product.image.url}} {% else %} {% static "img/noimage.png" %} {% endif %}" class="product-img">     {% endcomment %}
-
-            {% if product.images.all %}
-                {% for image in product.images.all %}
-                    <img class="product-img" src="{{ image.image.url }}" style="display: none;" data-index="{{ forloop.counter0 }}">
-                {% endfor %}
-            {% else %}
-                <img src="{% static "img/noimage.png" %}" class="product-img">
-            {% endif %}
-            <div class='btn-div'>
-                <button class='next-btn'>&rsaquo;</button>
-            </div>
-            <script>
-                const images = document.querySelectorAll('.product-img');
-                const prev = document.querySelector('.prev-btn');
-                const next = document.querySelector('.next-btn');
-                let currentIndex = 0;
-
-                images[currentIndex].style.display = 'block';
-
-                if(images.length === 1){
-                    prev.style.display = 'none';
-                    next.style.display = 'none';
-                }
-                else {
-                    prev.addEventListener('click', () => {
-                        images[currentIndex].style.display = 'none';
-                        currentIndex = (currentIndex - 1 + images.length) % images.length;
-                        images[currentIndex].style.display = 'block';               
-                    });
-
-                    next.addEventListener('click', () => {
-                        images[currentIndex].style.display = 'none';
-                        currentIndex = (currentIndex + 1) % images.length;
-                        images[currentIndex].style.display = 'block';               
-                    });
-                }
-            </script>
         </div>
+        <script>
+            const images = document.querySelectorAll('.product-img');
+            const leftZone = document.querySelector('.left-click-zone');
+            const rightZone = document.querySelector('.right-click-zone');
+            let currentIndex = 0;
+        
+            images[currentIndex].style.display = 'block';
+        
+            if (images.length > 1) {
+                leftZone.addEventListener('click', () => {
+                    images[currentIndex].style.display = 'none';
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    images[currentIndex].style.display = 'block';
+                });
+        
+                rightZone.addEventListener('click', () => {
+                    images[currentIndex].style.display = 'none';
+                    currentIndex = (currentIndex + 1) % images.length;
+                    images[currentIndex].style.display = 'block';
+                });
+            } else {
+                leftZone.style.display = 'none';
+                rightZone.style.display = 'none';
+            }
+        </script>
         <div class="product-description">
             <h1>{{product.name}}</h1>
             <h2 class="pt-3">Description:</h2>
