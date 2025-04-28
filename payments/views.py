@@ -79,15 +79,40 @@ def payment_completed(request):
         # Пошук замовлення по payment_intent
         order = Order.objects.get(stripe_id=session.payment_intent)
 
-        # Відправка листа
-        message = f"""..."""  # Ваш текст листа
-        send_mail(
-            "Order Confirmation",
-            message,
-            settings.EMAIL_HOST_USER,
-            [order.email],
-            fail_silently=True
-        )
+        message = f"""
+        Dear {order.first_name} {order.last_name},
+
+        We are pleased to inform you that your payment has been successfully processed! 🎉  
+
+        Here are the details of your order:  
+        - Order ID: {order.id}  
+        - Name: {order.first_name} {order.last_name}  
+        - Email: {order.email}  
+        - Phone: {order.phone_number}  
+        - Shipping Address: {order.address}, {order.city}, {order.postal_code}  
+
+        Ordered items:
+        """
+
+        for item in order.items.all():
+            message += f"- {item.product.name} (Size: {item.size}) - {item.quantity} pcs - ₴{item.price * item.quantity}\n"
+
+        message += f"""
+
+        Total Amount: ₴{order.get_total_cost()}  
+
+        Your order is now being processed, and we will update you once it has been shipped.  
+
+        Thank you for choosing Takizawa Shizoku!  
+
+        Best regards,  
+        Takizawa Shizoku Team  
+        """
+
+        title = "Order Confirmation - Takizawa Shizoku"
+        customer_email = order.email
+
+        send_mail(title, message, settings.EMAIL_HOST_USER, [customer_email], fail_silently=True)
         
         return render(request, 'payments/completed.html', {'order': order})
     
