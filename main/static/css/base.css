@@ -238,16 +238,13 @@ h2 {
     color: #000000;
 }
 
-.home-section{
-    width: 75%;
-}
-
 .home-cards{
     display: flex;
     flex-wrap: wrap; 
     gap: 20px; 
     align-items: flex-start;
     margin-bottom: 10px;
+    width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -263,7 +260,7 @@ h2 {
     margin-top: 0;
     box-sizing: border-box;
     max-width: 225px;
-    height: 425px;
+    height: 450px;
     margin-bottom: 10px;
 }
 
@@ -279,10 +276,20 @@ h2 {
 
 .img-card{
     flex: 0 0 50%;
-    max-height: 450px;
+    max-height: 550px;
     width: 100%;
     height: auto;
     
+}
+
+@media (max-width: 768px) {
+    .img-card{
+        flex: 0 0 50%;
+        max-height: 700px;
+        width: 100%;
+        height: auto;
+        
+    }
 }
 
 .title-card {
