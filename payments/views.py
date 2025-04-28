@@ -63,7 +63,7 @@ def payment_process(request):
             success_url=f"{request.build_absolute_uri(reverse('payments:completed'))}?session_id={{CHECKOUT_SESSION_ID}}",
             cancel_url=request.build_absolute_uri(reverse('payments:canceled'))
         )
-        
+        cart.clear()
         return redirect(session.url, code=303)
 
     
