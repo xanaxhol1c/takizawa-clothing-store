@@ -1,0 +1,75 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Takizawa{% endblock %}
+
+{% block content %} 
+    <div class='order-container'>
+        <form action='' method='post' class='order-form d-flex'>
+            <div class='order-input-container' style="font-family: 'GalliardStd'">
+                <div class='order-input-div'>
+                    <label for='id_first_name' class='order-form-label'></label>
+                    <input type='text' class='order-input-field form-control form-styleprofile' id='id_first_name' 
+                    name='first_name' placeholder='Your First Name' value="{{form.first_name.value|default:'' }}" required>
+                </div>
+                <div class='order-input-div'>
+                    <label for='id_last_name' class='order-form-label'></label>
+                    <input type='text' class='order-input-field form-control form-styleprofile' id='id_last_name' 
+                    name='last_name' placeholder='Your Last Name' value="{{form.last_name.value|default:'' }}" required>
+                </div>
+                <div class='order-input-div'>
+                    <label for='id_email' class="order-form-label"></label>
+                    <input type='text' class='order-input-field form-control form-styleprofile' 
+                    id='id_email' 
+                    name='email' 
+                    placeholder="Your Email" 
+                    value="{{form.email.value|default:'' }}" required>
+                    {% if form.email.errors %}
+                        <div class='input-error-container invalid-feedback'>
+                            <p style="color: #FF0000;"> {{form.email.errors.0}} </p>
+                        </div>
+                    {% endif%}
+                </div>
+                <div class='order-input-div'>
+                    <label for='id_phone_number' class="order-form-label"></label>
+                    <input type='text' class='order-input-field form-control form-styleprofile' 
+                    id='id_phone_number' 
+                    name='phone_number' 
+                    placeholder="Your Phone Number"
+                    value="{{form.phone_number.value|default:'' }}" required>
+                    {% if form.phone_number.errors %}
+                        <div class='input-error-container invalid-feedback'>
+                            <p style="color: #FF0000;"> {{form.phone_number.errors.0}} </p>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class='order-input-div'>
+                    <label for='id_city' class='order-form-label'></label>
+                    <input type='text' class='order-input-field form-control form-styleprofile' id='id_city' 
+                    name='city' placeholder='Your City' value="{{form.city.value|default:'' }}" required>
+                </div>
+                <div class='order-input-div'>
+                    <label for='id_address' class='order-form-label'></label>
+                    <input type='text' class='order-input-field form-control form-styleprofile' id='id_address' 
+                    name='address' placeholder='Your Address' value="{{form.address.value|default:'' }}" required>
+                </div>
+                <div class='order-input-div'>
+                    <label for='id_postal_code' class='order-form-label'></label>
+                    <input type='text' class='order-input-field form-control form-styleprofile' id='id_postal_code' 
+                    name='postal_code' placeholder='Your Postal Code' value="{{form.postal_code.value|default:'' }}" required>
+                </div>
+            </div>
+            <div class='order-checkout-container'>
+                <h1>Checkout</h1>
+                {% for item in cart %}
+                    <li class='order-checkout-li' style="font-family: 'GalliardStd'" >{{item.quantity}}x {{item.product.name}}
+                        <p>{{item.total_price}}₴</p>
+                    </li>   
+                {% endfor %}
+                <h2>Total: <span style="font-family: 'GalliardStd'; font-size:0.8em;">{{ cart.total_price }}₴</span></h2>
+                <p><input type='submit' class='submit-checkout-btn' value='Go to payment'></p>
+                {% csrf_token %}
+            </div>
+        </form>
+    </div>
+{% endblock %}

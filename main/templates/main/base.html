@@ -5,13 +5,54 @@
         <meta charset="utf-8">
         <title>{% block title %}Main Index{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
-        <link rel="stylesheet" href={% static 'bootstrap\css\bootstrap.min.css'%}>
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1">
     </head>
     <body>
-        <div class = "container">
-            {% block content %} {%endblock%} 
-        </div>
+        <header class="header sticky-top"> 
+            <div class="header-container d-flex">         
+                <div class="header-nav">
+                    <ul class="header-list">
+                        <li><a href='/' class="nav-a m-3">Home</a></li>
+                        <li><a href='/shop/' class="nav-a m-3">Shop</a></li>
+                    </ul>               
+                </div>  
+
+                <div class="header-logo">
+                    <a href='/'><img src="{% static 'img/takizawa logo.png' %}" class="takizawa-logo" alt="Logo"></a>
+                </div>
+
+                <div class="header-empty">
+                    <a href='/cart/' class="nav-a m-3">Cart  
+                    {% with cart_quantity=cart|length %}
+                        {% if cart_quantity > 0 %}
+                            {% if cart_quantity < 100 %}   
+                                <span class='bg-dot'>   
+                                    {{cart_quantity}} 
+                                </span>
+                            {% else %}
+                                <span class='bg-dot'>   
+                                    99
+                                </span>
+                                <span class='plus-symbol'>
+                                    +
+                                </span>
+                            {% endif %}  
+                            </span>   
+                        {% endif %}
+                    {% endwith %}
+                    </a>
+                </div>
+            </div>
+        </header> 
         
+        <div class="container">
+            {% block content %} {% endblock %} 
+        </div>
+        <footer class="footer">
+            <p class="text-white mt-2">takizawa 2025</p>
+        </footer>
     </body>
 </html>
