@@ -5,6 +5,7 @@ from orders.forms import OrderCreateForm
 from decimal import Decimal
 from django.conf import settings
 import stripe
+import json
 
 from django.http import HttpResponse
 
@@ -20,20 +21,15 @@ stripe.api_version = settings.STRIPE_API_VERSION
 def payment_process(request):
     cart = Cart(request)
     if request.method == 'GET':
-        success_url = request.build_absolute_uri(reverse('payments:completed'))
-
-        cancel_url = request.build_absolute_uri(reverse('payments:canceled'))
-
-        session_data = {
-            'mode': 'payment',
-            # 'client_reference_id': order.id,
-            'success_url' : success_url,
-            'cancel_url' : cancel_url,
-            'line_items': []
-        }
+        order_data = request.session.get('order', {})
+        
+        # Підготовка товарів
+        line_items = []
+        items_for_metadata = []
+        
         for item in cart:
             price = item['product'].sell_price()
-            session_data['line_items'].append({ 
+            line_items.append({
                 'price_data': {
                     'unit_amount': int(price * Decimal(100)),
                     'currency': 'uah',
@@ -43,84 +39,89 @@ def payment_process(request):
                 },
                 'quantity': item['quantity']
             })
-        session = stripe.checkout.Session.create(**session_data)
+            
+            items_for_metadata.append({
+                'product_id': item['product'].id,
+                'price': str(price),
+                'quantity': item['quantity'],
+                'size': item.get('size', '')
+            })
+
+        # Створення сесії оплати
+        session = stripe.checkout.Session.create(
+            mode='payment',
+            line_items=line_items,
+            metadata={
+                'first_name': order_data.get('first_name', ''),
+                'last_name': order_data.get('last_name', ''),
+                'phone_number': order_data.get('phone_number', ''),
+                'city': order_data.get('city', ''),
+                'address': order_data.get('address', ''),
+                'postal_code': order_data.get('postal_code', ''),
+                'items': json.dumps(items_for_metadata)
+            },
+            success_url=f"{request.build_absolute_uri(reverse('payments:completed'))}?session_id={{CHECKOUT_SESSION_ID}}",
+            cancel_url=request.build_absolute_uri(reverse('payments:canceled'))
+        )
+        cart.clear()
         return redirect(session.url, code=303)
 
     
 def payment_completed(request):
-    cart = Cart(request)
-
-    form_data = {
-        'first_name': request.session['order']['first_name'],
-        'last_name': request.session['order']['last_name'],
-        'email': request.session['order']['email'],
-        'phone_number': request.session['order']['phone_number'],
-        'city': request.session['order']['city'],
-        'address': request.session['order']['address'],
-        'postal_code': request.session['order']['postal_code'],
-    }
-
-    form = OrderCreateForm(form_data)
-
-    if form.is_valid():
-        order = form.save(commit=False)
-        order.paid = True  
-        order.stripe_id = request.session.get('order_stripe_id')
-        order.save()
-
-        for item in cart:
-            OrderItem.objects.create(
-                order=order,
-                product=item['product'],
-                price=item['price'],
-                quantity=item['quantity'],
-                size = item['size']
-            )
+    session_id = request.GET.get('session_id')
+    if not session_id:
+        return HttpResponse("Missing session ID", status=400)
+    
+    try:
+        # Отримання сесії з Stripe
+        session = stripe.checkout.Session.retrieve(session_id)
         
-        cart.clear()
+        # Пошук замовлення по payment_intent
+        order = Order.objects.get(stripe_id=session.payment_intent)
 
-        request.session['order_id'] = order.id
-        request.session.modified = True
+        message = f"""
+        Dear {order.first_name} {order.last_name},
 
-    order_id = request.session.get('order_id', None)
-    order = get_object_or_404(Order, id=order_id)
+        We are pleased to inform you that your payment has been successfully processed! 🎉  
 
-    message = f"""
-    Dear {order.first_name} {order.last_name},
+        Here are the details of your order:  
+        - Order ID: {order.id}  
+        - Name: {order.first_name} {order.last_name}  
+        - Email: {order.email}  
+        - Phone: {order.phone_number}  
+        - Shipping Address: {order.address}, {order.city}, {order.postal_code}  
 
-    We are pleased to inform you that your payment has been successfully processed! 🎉  
+        Ordered items:
+        """
 
-    Here are the details of your order:  
-    - Order ID: {order.id}  
-    - Name: {order.first_name} {order.last_name}  
-    - Email: {order.email}  
-    - Phone: {order.phone_number}  
-    - Shipping Address: {order.address}, {order.city}, {order.postal_code}  
+        for item in order.items.all():
+            message += f"- {item.product.name} (Size: {item.size}) - {item.quantity} pcs - ₴{item.price * item.quantity}\n"
 
-    Ordered items:
-    """
+        message += f"""
 
-    for item in order.items.all():
-        message += f"- {item.product.name} (Size: {item.size}) - {item.quantity} pcs - ₴{item.price * item.quantity}\n"
+        Total Amount: ₴{order.get_total_cost()}  
 
-    message += f"""
+        Your order is now being processed, and we will update you once it has been shipped.  
 
-    Total Amount: ₴{order.get_total_cost()}  
+        Thank you for choosing Takizawa Shizoku!  
 
-    Your order is now being processed, and we will update you once it has been shipped.  
+        Best regards,  
+        Takizawa Shizoku Team  
+        """
 
-    Thank you for choosing Takizawa Shizoku!  
+        title = "Order Confirmation - Takizawa Shizoku"
+        customer_email = order.email
 
-    Best regards,  
-    Takizawa Shizoku Team  
-    """
-
-    title = "Order Confirmation - Takizawa Shizoku"
-    customer_email = order.email
-
-    send_mail(title, message, settings.EMAIL_HOST_USER, [customer_email], fail_silently=True)
-
-    return render(request, 'payments/completed.html', {'order' : order})
-
+        send_mail(title, message, settings.EMAIL_HOST_USER, [customer_email], fail_silently=True)
+        
+        return render(request, 'payments/completed.html', {'order': order})
+    
+    except stripe.error.StripeError as e:
+        return HttpResponse("Payment verification failed", status=400)
+    except Order.DoesNotExist:
+        return HttpResponse("Order not found", status=404)
+    except Exception as e:
+        return HttpResponse("Internal server error", status=500)
+    
 def payment_canceled(request):
     return render(request, 'payments/canceled.html')

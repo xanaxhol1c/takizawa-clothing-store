@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
+import dj_database_url
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,13 +26,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-me9v_c@u^@o1#2l^$n*9i26y$%$!y+6jc24cl*hi#(y8(0mq)8'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+DEBUG = False
 
+
+# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(" ")
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -44,8 +48,18 @@ INSTALLED_APPS = [
     'main',
     'cart',
     'orders',
-    'payments'
+    'payments',
+    'cloudinary', 
+    'cloudinary_storage'
 ]
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUD_API_KEY'),
+    'API_SECRET': os.getenv('CLOUD_API_SECRET')
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'takizawa.urls'
@@ -82,17 +97,34 @@ WSGI_APPLICATION = 'takizawa.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASE_INTERNAL = os.getenv('DATABASE_INTERNAL')
+
+# if DATABASE_INTERNAL:
+#     DATABASES = {
+#         'default': dj_database_url.parse(DATABASE_INTERNAL)
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'takizawaDB',
+#             'USER': 'postgres',
+#             'PASSWORD': 'qwerty',
+#             'HOST': 'localhost',
+#             'PORT': '5432',
+#         }
+#     }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'takizawaDB',
         'USER': 'postgres',
-        'PASSWORD' : 'qwerty',
+        'PASSWORD': 'qwerty',
         'HOST': 'localhost',
-        'PORT': '5432'
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -128,16 +160,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 MEDIA_URL = 'media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# MEDIA_URL = os.getenv('CLOUDINARY_URL')
+
+# MEDIA_ROOT = ''
 
 CART_SESSION_ID = 'cart'
 

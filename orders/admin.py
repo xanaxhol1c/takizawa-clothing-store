@@ -11,4 +11,5 @@ class OrderAdmin(admin.ModelAdmin):
                     'phone_number', 'city', 'address', 'postal_code', 
                     'created', 'updated', 'paid']
     list_filter = ['id', 'paid', 'created', 'updated']
+    search_fields = ('stripe_id', 'first_name', 'last_name')
     inlines = [OrderItemInline]
