@@ -1,0 +1,10 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title%}Not Found{% endblock %}
+
+{% block content %}
+    <div class="mt-4 not-found-div">
+        <img src = "{% static 'img/takizawa logo.png' %}" class="not-found-logo"/>
+        <h1 class='mt-4 d-flex justify-content-center'>Sorry, this page is not found!</h1>
+    </div>
+{% endblock content %}
