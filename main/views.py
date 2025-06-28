@@ -34,4 +34,4 @@ def product_detail(request, slug):
 
 
 def test_404_view(request):
-    return render(request, 'main/404.html', status=404)
+    return render(request, '404.html', status=404)
