@@ -31,3 +31,7 @@ def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, avaliable=True)
     cart_product_form = CartAddProductForm
     return render(request, 'main/product/details.html', {'product': product, 'cart_product_form' : cart_product_form})
+
+
+def test_404_view(request):
+    return render(request, 'main/404.html', status=404)
