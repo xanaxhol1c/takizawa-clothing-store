@@ -33,5 +33,5 @@ def product_detail(request, slug):
     return render(request, 'main/product/details.html', {'product': product, 'cart_product_form' : cart_product_form})
 
 
-def test_404_view(request):
-    return render(request, '404.html', status=404)
+# def test_404_view(request):
+#     return render(request, '404.html', status=404)
