@@ -13,3 +13,4 @@ staticfiles/
 venv/
 .env
 staticfiles/
+takizawadb_backup.sql
