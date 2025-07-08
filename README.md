@@ -1,8 +1,8 @@
 # Takizawa Clothing Store
 
 A web-based clothing store where users can browse products, add items to cart, place orders, and pay via **Stripe**.  
-An admin panel is available for managing products and monitoring orders for further processing.
-
+An admin panel is available for managing products and monitoring orders for further processing.<br><br>
+**Link**: [takizawa-store.onrender.com](https://takizawa-store.onrender.com)
 ---
 
 ## **Stack**:
