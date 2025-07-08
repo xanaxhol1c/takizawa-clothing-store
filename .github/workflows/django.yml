@@ -23,6 +23,7 @@ jobs:
 
     env:
       ALLOWED_HOSTS: 127.0.0.1
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
       DB_NAME: test_db
       DB_USER: postgres
       DB_PASSWORD: postgres
