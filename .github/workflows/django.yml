@@ -24,6 +24,10 @@ jobs:
     env:
       ALLOWED_HOSTS: 127.0.0.1
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+      CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+      CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+      CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
       DB_NAME: test_db
       DB_USER: postgres
       DB_PASSWORD: postgres
