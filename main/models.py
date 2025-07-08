@@ -23,7 +23,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.PROTECT)
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True)
-    image = models.ImageField(upload_to='produts/%Y/%m/%d', blank=True)
+    image = CloudinaryField('image')
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     avaliable = models.BooleanField(default=True)
