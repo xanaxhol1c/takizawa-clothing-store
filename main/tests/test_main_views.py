@@ -1,7 +1,9 @@
 from django.test import TestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from main.models import Category, Product
 from decimal import Decimal
+
 
 class IndexViewTestCase(TestCase):
     def test_index_view(self):
@@ -13,11 +15,16 @@ class IndexViewTestCase(TestCase):
 class ProductListTestCase(TestCase):
     def test_all_product_list(self):
         category1 = Category.objects.create(name='Pants', slug="pants")
+        image_mock = SimpleUploadedFile(
+            name='test_image.jpg',
+            content=b'file_content',
+            content_type='image/jpeg'
+        )
         product1 = Product.objects.create(category=category1,
                                           name="product1",
                                           slug="product1", 
                                           price=Decimal(1000.00),
-                                          image="produts/2025/03/08/ultimate_muscules_pic1.png",
+                                          image=image_mock,
                                           description="desc")
         response = self.client.get(reverse('main:shop'))
         self.assertEqual(response.status_code, 200)
@@ -30,18 +37,23 @@ class ProductListTestCase(TestCase):
 
     def test_product_list_with_category(self):
         category1 = Category.objects.create(name='Pants', slug="pants")
+        image_mock = SimpleUploadedFile(
+            name='test_image.jpg',
+            content=b'file_content',
+            content_type='image/jpeg'
+        )
         product1 = Product.objects.create(category=category1,
                                           name="product1",
                                           slug="product1", 
                                           price=Decimal(1000.00),
-                                          image="produts/2025/03/08/ultimate_muscules_pic1.png",
+                                          image=image_mock,
                                           description="desc")
         category2 = Category.objects.create(name='T-Shirt', slug="t-shirt")
         product2 = Product.objects.create(category=category2,
                                           name="product2",
                                           slug="product2", 
                                           price=Decimal(1500.00),
-                                          image="produts/2025/03/08/ultimate_muscules_pic1.png",
+                                          image=image_mock,
                                           description="des2")
         
         response = self.client.get(reverse('main:get_products_list', args=[category2.slug]))
@@ -57,13 +69,18 @@ class ProductListTestCase(TestCase):
 
     def test_product_list_pagiantion(self):
         category1 = Category.objects.create(name='Pants', slug="pants")
+        image_mock = SimpleUploadedFile(
+            name='test_image.jpg',
+            content=b'file_content',
+            content_type='image/jpeg'
+        )
         for i in range(9):
             Product.objects.create(
                 category=category1,
                 name=f"Product {i}",
                 slug=f"product-{i}",
                 price=Decimal("1000.00"),
-                image="products/sample.png",
+                image=image_mock,
                 description="Test description"
             )
 
@@ -90,11 +107,16 @@ class ProductListTestCase(TestCase):
 class ProductDetailsTestCase(TestCase):
     def test_product_details_page(self):
         category1 = Category.objects.create(name='Pants', slug="pants")
+        image_mock = SimpleUploadedFile(
+            name='test_image.jpg',
+            content=b'file_content',
+            content_type='image/jpeg'
+        )
         product1 = Product.objects.create(category=category1,
                                           name="product1",
                                           slug="product1", 
                                           price=Decimal(1000.00),
-                                          image="produts/2025/03/08/ultimate_muscules_pic1.png",
+                                          image=image_mock,
                                           description="desc")
 
         response = self.client.get(reverse('main:product_details', args=[product1.slug]))
@@ -105,11 +127,16 @@ class ProductDetailsTestCase(TestCase):
 
     def test_not_found_product_details_page(self):
         category1 = Category.objects.create(name='Pants', slug="pants")
+        image_mock = SimpleUploadedFile(
+            name='test_image.jpg',
+            content=b'file_content',
+            content_type='image/jpeg'
+        )
         product1 = Product.objects.create(category=category1,
                                           name="product1",
                                           slug="product1", 
                                           price=Decimal(1000.00),
-                                          image="produts/2025/03/08/ultimate_muscules_pic1.png",
+                                          image=image_mock,
                                           description="desc")
 
         response = self.client.get(reverse('main:product_details', args=["product2"]))
