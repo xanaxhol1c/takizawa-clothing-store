@@ -1,9 +1,7 @@
 from django.test import TestCase
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from main.models import Category, Product
 from decimal import Decimal
-from unittest.mock import patch, MagicMock
 
 class IndexViewTestCase(TestCase):
     def test_index_view(self):
@@ -12,10 +10,7 @@ class IndexViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'main/index/index.html')
 
 class ProductListTestCase(TestCase):
-    @patch('main.models.Product.image') 
-    def setUp(self, mock_image):
-        mock_image.return_value = MagicMock(url='https://fake.url/test.jpg')
-        
+    def setUp(self):
         self.category1 = Category.objects.create(name='Pants', slug="pants")
         self.category2 = Category.objects.create(name='T-Shirt', slug="t-shirt")
         
@@ -37,10 +32,7 @@ class ProductListTestCase(TestCase):
             description="desc2"
         )
 
-    @patch('cloudinary.uploader.upload')
-    def test_all_product_list(self, mock_upload):
-        mock_upload.return_value = {'secure_url': 'https://fake.url/test.jpg'}
-        
+    def test_all_product_list(self):
         response = self.client.get(reverse('main:shop'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/product/list.html')
@@ -62,10 +54,7 @@ class ProductListTestCase(TestCase):
         self.assertEqual(1, response.context['current_page'].number)
         self.assertEqual(self.category2.slug, response.context['slug_url'])
 
-    @patch('main.models.Product.image')
-    def test_product_list_pagination(self, mock_image):
-        mock_image.return_value = MagicMock(url='https://fake.url/test.jpg')
-        
+    def test_product_list_pagination(self):
         for i in range(9):
             Product.objects.create(
                 category=self.category1,
@@ -93,9 +82,7 @@ class ProductListTestCase(TestCase):
         self.assertEqual(3, len(response_page_2.context['current_page'].object_list)) 
 
 class ProductDetailsTestCase(TestCase):
-    @patch('main.models.Product.image')
-    def setUp(self, mock_image):
-        mock_image.return_value = MagicMock(url='https://fake.url/test.jpg')
+    def setUp(self):
         self.category1 = Category.objects.create(name='Pants', slug="pants")
         self.product1 = Product.objects.create(
             category=self.category1,
