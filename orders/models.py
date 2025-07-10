@@ -21,7 +21,7 @@ class Order(models.Model):
             models.Index(fields=['-created']) 
             ]
         
-    def str(self):
+    def __str__(self):
         return f'Order {self.id}'
     
     def get_total_cost(self):
@@ -34,7 +34,7 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     size = models.CharField(max_length=2)
 
-    def str(self):
+    def __str__(self):
         return str(self.id)
     
     def get_cost(self):
