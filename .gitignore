@@ -12,3 +12,6 @@ media/
 venv/
 .env
 takizawadb_backup.sql
+htmlcov/
+.coverage
+staticfiles/
