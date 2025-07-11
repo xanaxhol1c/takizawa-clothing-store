@@ -23,8 +23,8 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.PROTECT)
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True)
-    image = CloudinaryField('image')
-    desription = models.TextField(blank=True)
+    image = models.ImageField(upload_to='produts/%Y/%m/%d', blank=True)
+    description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     avaliable = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -42,7 +42,7 @@ class Product(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('main:product_detail', args=[self.slug])
+        return reverse('main:product_details', args=[self.slug])
     
     def sell_price(self):
         if self.discount:
@@ -53,7 +53,7 @@ class Product(models.Model):
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
 
-    image = CloudinaryField('image')
+    image = models.ImageField(upload_to='produts/%Y/%m/%d', blank=True)
 
     def __str__(self):
         return f'{self.product.name} - {self.image}'

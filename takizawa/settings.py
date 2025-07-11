@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False
+DEBUG = True
 
 
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(" ")
@@ -153,9 +153,9 @@ MEDIA_URL = 'media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
-MEDIA_URL = os.getenv('CLOUDINARY_URL')
+# MEDIA_URL = os.getenv('CLOUDINARY_URL')
 
-MEDIA_ROOT = ''
+# MEDIA_ROOT = ''
 
 CART_SESSION_ID = 'cart'
 
