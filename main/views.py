@@ -27,7 +27,7 @@ def get_products_list(request, category_slug = None):
 #     categories = Category.objects.all().order_by('id')
 
 
-def product_detail(request, slug):
+def product_details(request, slug):
     product = get_object_or_404(Product, slug=slug, avaliable=True)
     cart_product_form = CartAddProductForm
     return render(request, 'main/product/details.html', {'product': product, 'cart_product_form' : cart_product_form})
