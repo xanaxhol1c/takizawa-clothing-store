@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
+DEBUG = False
 
 
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(" ")
@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'cloudinary', 
     'cloudinary_storage',
     'django_htmx',
-    'debug_toolbar',
+    # 'debug_toolbar',
 ]
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
@@ -67,7 +67,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -181,7 +181,7 @@ EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-    "localhost",
-]
+# INTERNAL_IPS = [
+#     "127.0.0.1",
+#     "localhost",
+# ]
