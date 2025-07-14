@@ -64,3 +64,28 @@ def city_autocomplete(request):
 
     return HttpResponse(html)
 
+def address_autocomplete(request):
+    query = request.GET.get('address')
+    city_ref = request.GET.get('city_ref')
+
+    if not query or not city_ref:
+        return HttpResponse('')
+
+    url = "https://api.novaposhta.ua/v2.0/json/"
+    body = {
+        "apiKey": NOVA_POST_API_KEY,
+        "modelName": "AddressGeneral",
+        "calledMethod": "searchSettlementStreets",
+        "methodProperties": {
+            "StreetName": query,
+            "SettlementRef": city_ref,
+            "Limit": 5
+        }
+    }
+
+    response = requests.post(url, json=body)
+
+    addresses = response.json().get('data', [])[0].get('Addresses', [])
+
+    html = render_to_string('partials/address_suggestions.html', {'addresses': addresses})
+    return HttpResponse(html)
