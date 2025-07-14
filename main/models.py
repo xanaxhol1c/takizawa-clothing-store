@@ -53,7 +53,7 @@ class Product(models.Model):
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
 
-    image = CloudinaryField('image')
+    image = models.ImageField(upload_to='produts/%Y/%m/%d', blank=True)
 
     def __str__(self):
         return f'{self.product.name} - {self.image}'

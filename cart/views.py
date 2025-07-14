@@ -19,7 +19,7 @@ def cart_add(request, product_id):
                  size=cd['size'],
                  override_quantity=cd['override'])
 
-    print(request.session.get(settings.CART_SESSION_ID))
+    # print(request.session.get(settings.CART_SESSION_ID))
 
     referer = request.META.get('HTTP_REFERER')  
     return redirect(referer)
