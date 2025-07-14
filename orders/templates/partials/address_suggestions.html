@@ -1,0 +1,22 @@
+
+{% if addresses %}
+    <ul class='order-dropdown-list form-control form-styleprofile mt-2'>
+        {% for address in addresses %}
+            <li style="width: 100%;">
+                <a href="#" onclick="selectAddress('{{ address.Present|escapejs }}')">
+                    {{ address.Present }}
+                </a>
+            </li>
+        {% empty %}
+            <li class="disabled">Not found</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% comment %} 
+<script>
+    function selectCity(cityName) {
+        const input = document.getElementById('id_city');
+        input.value = cityName;
+        document.getElementById('city-suggestions').innerHTML = '';
+    }
+</script> {% endcomment %}
