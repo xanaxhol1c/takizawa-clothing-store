@@ -844,6 +844,25 @@ h2 {
     }
 }
 
+.order-dropdown-list {
+    background-color: white;
+    /* border: 1px solid #ccc; */
+    border-radius: 6px;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.order-dropdown-list a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
+}
+
 .input-error-container{
     display: flex;
     height: 10px;

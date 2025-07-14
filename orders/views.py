@@ -3,6 +3,10 @@ from django.urls import reverse
 from cart.cart import Cart
 from .forms import OrderCreateForm 
 from .models import OrderItem
+import requests
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from takizawa.settings import NOVA_POST_API_KEY
 
 def order_create(request):
     cart = Cart(request)
@@ -30,3 +34,33 @@ def order_create(request):
     else:
         form = OrderCreateForm(request=request)
         return render(request, 'order/create.html', {'cart' : cart, 'form' : form})
+    
+def city_autocomplete(request):
+    query = request.GET.get('city')
+
+    # if not query:
+    #     return HttpResponse('')
+    
+    nova_post_api_url = "https://api.novaposhta.ua/v2.0/json/"
+
+    body = {
+        "apiKey": NOVA_POST_API_KEY,
+        "modelName": "AddressGeneral",
+        "calledMethod": "searchSettlements",
+        "methodProperties": {
+            "CityName": query,
+            "Limit": 5,
+            "Page": 1
+        }
+    }
+
+    response = requests.post(nova_post_api_url, json=body)
+
+    cities = response.json().get('data', [])[0].get('Addresses', [])
+
+    context = {'cities' : cities}
+
+    html = render_to_string('partials/city_suggestions.html', context)
+
+    return HttpResponse(html)
+

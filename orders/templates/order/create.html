@@ -45,8 +45,19 @@
                 </div>
                 <div class='order-input-div'>
                     <label for='id_city' class='order-form-label'></label>
-                    <input type='text' class='order-input-field form-control form-styleprofile' id='id_city' 
-                    name='city' placeholder='Your City' value="{{form.city.value|default:'' }}" required>
+                    <input 
+                    type='text' 
+                    class='order-input-field form-control form-styleprofile' 
+                    id='id_city' 
+                    name='city' 
+                    placeholder='Your City'
+                    value="{{form.city.value|default:'' }}" 
+                    autocomplete="off" required
+                    hx-get="{% url 'orders:city-autocomplete' %}"
+                    hx-trigger="keyup changed delay:300ms"
+                    hx-target="#city-suggestions"
+                    hx-swap="innerHTML">
+                    <div id="city-suggestions"></div>
                 </div>
                 <div class='order-input-div'>
                     <label for='id_address' class='order-form-label'></label>
