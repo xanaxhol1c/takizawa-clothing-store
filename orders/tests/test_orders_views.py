@@ -77,3 +77,37 @@ class OrderViewsTestCase(TestCase):
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, 'order/create.html')
         self.assertTrue(response.context['form'].errors)
+
+    
+class OrderAutocompleteTestCase(TestCase):
+
+    def test_autocomplete_city(self):
+        response = self.client.get(reverse('orders:city-autocomplete'), {'city': 'Київ'})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context['cities'])
+        self.assertEqual(len(response.context['cities']), 5)
+        self.assertEqual(response.context['cities'][0]['Present'], 'м. Київ, Київська обл.')
+        self.assertEqual(response.context['cities'][0]['Ref'], 'e718a680-4b33-11e4-ab6d-005056801329')
+
+    def test_autocomplete_city_empty_query(self):
+        response = self.client.get(reverse('orders:city-autocomplete'))
+        self.assertEqual(response.content.decode('utf-8'), '')
+
+    def test_autocomplete_address_with_city(self):
+        response = self.client.get(reverse('orders:address-autocomplete'), 
+                                   {'address' : 'Бер',
+                                    'city_ref': 'e718a680-4b33-11e4-ab6d-005056801329', })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context['addresses'])
+        self.assertEqual(len(response.context['addresses']), 5)
+        self.assertEqual(response.context['addresses'][0]['Present'], 'просп. Берестейський')
+    
+    def test_autocomplete_address_empty(self):
+        response = self.client.get(reverse('orders:address-autocomplete'))
+        self.assertEqual(response.content.decode('utf-8'), '')
+
+    def test_autocomplete_address_empty_city_ref(self):
+        response = self.client.get(reverse('orders:address-autocomplete'), {'address' : 'Бер'})
+        self.assertEqual(response.content.decode('utf-8'), '')
