@@ -25,7 +25,7 @@ def order_create(request):
                 'city': str(order['city'])
             }
 
-            print(request.session['order'])
+            # print(request.session['order'])
             request.session.modified = True
             return redirect(reverse('payments:process'))
         else:
@@ -37,11 +37,11 @@ def order_create(request):
     
 def city_autocomplete(request):
     query = request.GET.get('city')
-
-    # if not query:
-    #     return HttpResponse('')
     
     nova_post_api_url = "https://api.novaposhta.ua/v2.0/json/"
+
+    if not query:
+        return HttpResponse('')
 
     body = {
         "apiKey": NOVA_POST_API_KEY,
