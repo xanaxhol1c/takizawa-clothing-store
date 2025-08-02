@@ -32,10 +32,10 @@ class Cart:
         self.session.modified = True
 
     def total_price(self):
-        total_price = 0
-        for item in self.cart.values():
-            total_price += Decimal(item['total_price'])
+        total_price = Decimal("0.0")
         
+        for item in self:
+            total_price += Decimal(item['total_price'])
         return format(total_price, '.2f')
     
     def __iter__(self):
@@ -49,12 +49,15 @@ class Cart:
             product = products_dict.get(product_id)
 
             if product:
-                item['product'] = product
-                item['size'] = size  
-                item['price'] = Decimal(item['price']) - (Decimal(item['price']) * Decimal(product.discount)) / 100
-                item['total_price'] = format(item['price'] * item['quantity'], '.2f')
+                item_copy = item.copy()
+                item_copy['product'] = product
+                item_copy['size'] = size  
 
-            yield item
+                price = Decimal(item['price']) - (Decimal(item['price']) * Decimal(product.discount)) / 100
+                item_copy['price'] = format(price, '.2f')
+                item_copy['total_price'] = format(price * item['quantity'], '.2f')
+
+            yield item_copy
 
 
     def __len__(self):
