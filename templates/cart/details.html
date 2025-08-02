@@ -4,55 +4,5 @@
 {% block title %}Takizawa{% endblock %}
 
 {% block content %} 
-    <div class="cart-container d-flex">
-        {% with cart_quantity=cart|length %}
-            {% if cart_quantity == 0 %}
-                <div class='cart-empty'>
-                    <h1>Shopping cart is empty!</h1>
-                </div>
-            {% else %}
-                <div class="cart-section d-flex flex-column">
-                    <div class="cart-title">
-                        <h1>Shopping cart</h1>
-                    </div>
-                    <div class="cart-cards d-flex flex-column" style="font-family: 'GalliardStd'">
-                        {% for item in cart %}
-                            {% with product=item.product %}
-                                <div class="cart-card d-flex">
-                                    <div class="cart-card-pic-container">
-                                        <img src="{% if product.image %} {{product.image.url}} {% else %} {% static "img/noimage.png" %} {% endif %}" class="cart-product-img">    
-                                    </div>
-                                    <section class="cart-card-info d-flex flex-column"> 
-                                        <h5 class="cart-card-name">{{product.name}}</h5>
-                                        <div class='cart-card-additional-info d-flex flex-row'>
-                                            <h5 class="cart-card-q">Quantity: {{item.quantity}}</h5>
-                                            <h5 class="cart-card-q">Size: {{item.size}}</h5>
-                                        </div>
-                                    </section>
-                                    <div class="cart-card-price">
-                                        <h5 class="cart-card-price-text">Price: {{item.total_price}}₴</h5>
-                                    </div>
-                                    <div class="cart-card-btns">
-                                        <form action="{% url "cart:cart_remove" product.id%}" method="post">
-                                            <input type="submit" value="Remove" class="remove-btn" style="font-family: 'Old London'">
-                                            <input type="hidden" name="size" value="{{ item.size }}">
-                                            {% csrf_token %}
-                                        </form>
-                                    </div>
-                                </div>
-                            {% endwith %} 
-                        {% endfor %}
-                    </div> 
-                </div>
-                <div class="cart-total sticky-top">
-                    {% with cart_quantity=cart|length %}
-                        {% if cart_quantity > 0 %}
-                            <h1 class='cart-total-text'>Total price: <span style="font-family: 'GalliardStd'; font-size:0.8em;">{{ cart.total_price }}₴ </span> </h1>
-                           <a href="{% url "orders:order_create" %}" class="checkout-btn">Checkout</a>
-                        {% endif %}
-                    {% endwith %}
-                </div> 
-            {% endif %}
-        {%endwith%}
-    </div>  
+    {% include "partials/cart/details_content.html" %}
 {% endblock %}
