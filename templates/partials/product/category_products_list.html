@@ -1,0 +1,16 @@
+<div class="home-title">
+    <h1>{% if category %}{{category.name}}{%else%}Shop{%endif%}</h1>
+</div>
+<div class="home-cards d-flex" style="font-family: 'GalliardStd'">
+    {% for product in current_page%}
+        <a href="{{ product.get_absolute_url }}" class="home-card d-flex flex-column">
+            <img src="{{product.image.url}}" class="img-card">
+            <h5 class="title-card m-1">{{product.name}}</h5>
+            {% if product.discount %}
+                <p class="home-card-price m-1">{{product.sell_price}}₴</p>
+            {% else %}
+                <p class="home-card-price m-1">{{product.price}}₴</p>
+            {% endif %}
+        </a>
+    {% endfor %}
+</div>   

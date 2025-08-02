@@ -1,5 +1,7 @@
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
+from django.http import HttpResponse
 from main.models import Product
 from .cart import Cart
 from .forms import CartAddProductForm
@@ -19,6 +21,12 @@ def cart_add(request, product_id):
                  size=cd['size'],
                  override_quantity=cd['override'])
 
+    if request.htmx:
+        response = HttpResponse(status=204)
+        response["HX-Trigger"] = json.dumps({
+            "cartUpdated" : {"count" : len(cart)}
+        })
+        return response
     # print(request.session.get(settings.CART_SESSION_ID))
 
     referer = request.META.get('HTTP_REFERER')  
