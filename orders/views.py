@@ -60,7 +60,7 @@ def city_autocomplete(request):
 
     context = {'cities' : cities}
 
-    html = render_to_string('partials/city_suggestions.html', context)
+    html = render_to_string('partials/order/city_suggestions.html', context)
 
     return HttpResponse(html)
 
@@ -87,5 +87,5 @@ def address_autocomplete(request):
 
     addresses = response.json().get('data', [])[0].get('Addresses', [])
 
-    html = render_to_string('partials/address_suggestions.html', {'addresses': addresses})
+    html = render_to_string('partials/order/address_suggestions.html', {'addresses': addresses})
     return HttpResponse(html)
