@@ -24,7 +24,7 @@ def get_products_list(request, category_slug = None):
         current_page = paginator.page(int(page))
 
     if request.htmx:
-        html = render_to_string('partials/product/category_products_list.html', 
+        html = render_to_string("partials/product/products_list.html", 
                                 {'category': category, 
                                  'categories': categories, 
                                  'current_page': current_page, 
