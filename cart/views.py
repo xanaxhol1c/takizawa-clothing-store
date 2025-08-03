@@ -1,10 +1,12 @@
+import json
+from django.template.loader import render_to_string
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
+from django.http import HttpResponse
 from main.models import Product
 from .cart import Cart
 from .forms import CartAddProductForm
 
-from django.conf import settings
 # Create your views here.
 
 @require_POST
@@ -19,6 +21,12 @@ def cart_add(request, product_id):
                  size=cd['size'],
                  override_quantity=cd['override'])
 
+    if request.htmx:
+        response = HttpResponse(status=204)
+        response["HX-Trigger"] = json.dumps({
+            "cartUpdated" : {"count" : len(cart)}
+        })
+        return response
     # print(request.session.get(settings.CART_SESSION_ID))
 
     referer = request.META.get('HTTP_REFERER')  
@@ -35,6 +43,14 @@ def cart_remove(request, product_id):
 
     cart.remove(product, size)
 
+    if request.htmx:
+        html = render_to_string("partials/cart/details_content.html", {"cart" : cart}, request=request)
+        response = HttpResponse(html)
+        response["HX-Trigger"] = json.dumps({
+            "cartUpdated" : {"count" : len(cart)}
+        })
+        return response
+    
     return redirect('cart:cart_details')
 
 def cart_details(request):

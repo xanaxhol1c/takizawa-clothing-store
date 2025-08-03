@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="header-empty">
-                    <a href='/cart/' class="nav-a m-3">Cart  
+                    <a href='/cart/' class="nav-a m-3">Cart<span id="cart-counter">
                     {% with cart_quantity=cart|length %}
                         {% if cart_quantity > 0 %}
                             {% if cart_quantity < 100 %}   
@@ -44,6 +44,7 @@
                             </span>   
                         {% endif %}
                     {% endwith %}
+                        </span>
                     </a>
                 </div>
             </div>
@@ -56,4 +57,22 @@
             <p class="text-white mt-2">takizawa 2025</p>
         </footer>
     </body>
+    <script>
+        document.body.addEventListener("cartUpdated", function(event) {
+            const count = event.detail.count;
+            const counter = document.getElementById("cart-counter");
+
+            if (!counter) return;
+
+            if (count > 0) {
+                if (count < 100) {
+                    counter.innerHTML = `<span class='bg-dot'>${count}</span>`;
+                } else {
+                    counter.innerHTML = `<span class='bg-dot'>99</span><span class='plus-symbol'>+</span>`;
+                }
+            } else {
+                counter.innerHTML = "";
+            }
+        });
+    </script>
 </html>

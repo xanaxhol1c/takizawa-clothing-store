@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block title%}Takizawa{% endblock %}
 
@@ -52,7 +52,7 @@
                 <h2 class="pt-2">{{product.price}}₴</h2>
             {% endif %}
 
-            <form action="{% url "cart:cart_add" product.id %}" class="qform" method="post">
+            <form hx-post="{% url "cart:cart_add" product.id %}" hx-swap="none" class="qform" method="post">
                 <div class="cart-form">
                     {{cart_product_form}}
                     {% csrf_token %}

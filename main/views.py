@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django.core.paginator import Paginator
 from .models import Product, Category
 from cart.forms import CartAddProductForm
@@ -20,6 +22,16 @@ def get_products_list(request, category_slug = None):
     else:
         paginator = Paginator(products, 8)
         current_page = paginator.page(int(page))
+
+    if request.htmx:
+        html = render_to_string("partials/product/products_list.html", 
+                                {'category': category, 
+                                 'categories': categories, 
+                                 'current_page': current_page, 
+                                 'slug_url' : category_slug}, 
+                                 request)
+        
+        return HttpResponse(html)
 
     return render(request, 'main/product/list.html', {'category': category, 'categories': categories, 'current_page': current_page, 'slug_url' : category_slug})
 
