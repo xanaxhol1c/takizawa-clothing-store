@@ -9,17 +9,20 @@ An admin panel is available for managing products and monitoring orders for furt
 - Django
 - PostgreSQL
 - Stripe API
+- Nova Post API
 - Bootstrap
+- HTMX
 - Docker 
 
 ---
 
 ## **Options**:
 - CRUD for products and categories
-- Product listing and filtering by category
-- Add products to cart
+- Dynamic product listing and filtering by category using HTMX
+- Dynamic adding and removing products to cart using HTMX
 - Create and manage orders
 - Payment using Stripe API
+- City and Street suggestion help using Nova Post API
 - Email notification after successful payment
 - Admin panel for order & product management
 
